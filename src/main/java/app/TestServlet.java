@@ -1,20 +1,19 @@
 package app;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import io.undertow.Undertow;
 
-import java.io.IOException;
+public class TestServlet {
 
-@WebServlet(urlPatterns = "/test_servlet")
-public class TestServlet extends HttpServlet {
+    public static void main(String[] args) {
+        Undertow server = Undertow
+                .builder()
+                .addHttpListener(8080, "localhost")
+                .setHandler(exchange -> {
+                    exchange.getResponseSender()
+                            .send("\"Test servlet container is working!\"");
+                })
+                .build();
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-
-        resp.getWriter().write("Test servlet container is working!");
+        server.start();
     }
 }
