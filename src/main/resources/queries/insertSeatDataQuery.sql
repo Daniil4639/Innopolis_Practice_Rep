@@ -1,0 +1,2 @@
+insert into seats
+values (?, ?, ?)
