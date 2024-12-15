@@ -1,0 +1,25 @@
+services:
+  db:
+    image: postgres:14.15-alpine3.21
+    container_name: db
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+
+  app:
+    build:
+      context: .
+    container_name: app
+    ports:
+      - "9999:9999"
+    depends_on:
+      - db
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 2
+        window: 120s
