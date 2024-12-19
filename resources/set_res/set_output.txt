@@ -1,0 +1,24 @@
+Making set: [ninth string, tenth string, seventh string, second string, third string, fourth string, eighth string, fifth string, sixth string, first string]
+Adding items: [ninth string, tenth string, Car(model=Fabia, brand=Skoda, cost=4000000), seventh string, second string, fifth string, School(name=Some School, 1, inventedYear=1987, address=Some Street, 1, pupilsNumber=1500), Person(name=Иван, secondName=Андросов, age=43), first string, third string, Person(name=Андрей, secondName=Лимонов, age=19), fourth string, eighth string, sixth string, Car(model=iX, brand=BMW, cost=12000000)]
+Printing set: 
+	ninth string
+	tenth string
+	Car(model=Fabia, brand=Skoda, cost=4000000)
+	seventh string
+	second string
+	fifth string
+	School(name=Some School, 1, inventedYear=1987, address=Some Street, 1, pupilsNumber=1500)
+	Person(name=Иван, secondName=Андросов, age=43)
+	first string
+	third string
+	Person(name=Андрей, secondName=Лимонов, age=19)
+	fourth string
+	eighth string
+	sixth string
+	Car(model=iX, brand=BMW, cost=12000000)
+Old size = 15
+Adding 'sixth string' to set and check: [ninth string, tenth string, Car(model=Fabia, brand=Skoda, cost=4000000), seventh string, second string, fifth string, School(name=Some School, 1, inventedYear=1987, address=Some Street, 1, pupilsNumber=1500), Person(name=Иван, secondName=Андросов, age=43), first string, third string, Person(name=Андрей, secondName=Лимонов, age=19), fourth string, eighth string, sixth string, Car(model=iX, brand=BMW, cost=12000000)]
+New size = 15 -> element wasn't inserted
+Set contains 'sixth string'? - false
+Now set size is 14
+Now set is empty? - true

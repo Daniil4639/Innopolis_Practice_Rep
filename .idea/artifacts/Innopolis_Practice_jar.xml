@@ -1,0 +1,12 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Innopolis_Practice:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Innopolis_Practice_jar</output-path>
+    <root id="archive" name="Innopolis_Practice.jar">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/resources/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="module-output" name="Innopolis_Practice" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.36/lombok-1.18.36.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
