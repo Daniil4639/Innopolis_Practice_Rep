@@ -1,9 +1,9 @@
 package bus_app.repositories;
 
+import bus_app.mappers.DepartmentMapper;
 import bus_app.model.Department;
 import bus_app.packages.QueriesPackage;
 import lombok.RequiredArgsConstructor;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -26,7 +26,7 @@ public class DepartmentRepository {
 
         return jdbcTemplate.queryForObject(
                 String.format("select * from bus_db.departments where id = %d", maxId + 1),
-                BeanPropertyRowMapper.newInstance(Department.class)
+                new DepartmentMapper()
         );
     }
 

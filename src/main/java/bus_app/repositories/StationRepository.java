@@ -1,9 +1,9 @@
 package bus_app.repositories;
 
+import bus_app.mappers.StationMapper;
 import bus_app.model.Station;
 import bus_app.packages.QueriesPackage;
 import lombok.RequiredArgsConstructor;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -16,7 +16,7 @@ public class StationRepository {
     public Station getStationByName(String name) {
         return jdbcTemplate.queryForObject(
                 String.format(QueriesPackage.GET_STATION_BY_NAME, name),
-                BeanPropertyRowMapper.newInstance(Station.class)
+                new StationMapper()
         );
     }
 
@@ -39,7 +39,7 @@ public class StationRepository {
 
         return jdbcTemplate.queryForObject(
                 String.format("select * from bus_db.stations where id = %d", maxId + 1),
-                BeanPropertyRowMapper.newInstance(Station.class)
+                new StationMapper()
         );
     }
 }

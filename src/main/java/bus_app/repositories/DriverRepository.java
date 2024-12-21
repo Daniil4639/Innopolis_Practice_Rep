@@ -1,9 +1,9 @@
 package bus_app.repositories;
 
+import bus_app.mappers.DriverMapper;
 import bus_app.model.Driver;
 import bus_app.packages.QueriesPackage;
 import lombok.RequiredArgsConstructor;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -24,14 +24,14 @@ public class DriverRepository {
 
         return jdbcTemplate.queryForObject(
                 String.format("select * from bus_db.drivers where id = %d", obj.getId()),
-                BeanPropertyRowMapper.newInstance(Driver.class)
+                new DriverMapper()
         );
     }
 
     public Driver deleteDriverById(Integer id) {
         Driver driver = jdbcTemplate.queryForObject(
                 String.format("select * from bus_db.drivers where id = %d", id),
-                BeanPropertyRowMapper.newInstance(Driver.class)
+                new DriverMapper()
         );
 
         jdbcTemplate.execute(

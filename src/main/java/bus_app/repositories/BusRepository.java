@@ -1,9 +1,10 @@
 package bus_app.repositories;
 
+import bus_app.mappers.BusMapper;
+import bus_app.mappers.StationMapper;
 import bus_app.model.*;
 import bus_app.packages.QueriesPackage;
 import lombok.RequiredArgsConstructor;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -18,14 +19,14 @@ public class BusRepository{
     public Bus getBusByNum(Integer id) {
         return jdbcTemplate.queryForObject(
                 String.format(QueriesPackage.GET_BUS_BY_ID, id),
-                BeanPropertyRowMapper.newInstance(Bus.class)
+                new BusMapper()
         );
     }
 
     public List<Station> getStationsByBusNumber(Integer id) {
         return jdbcTemplate.queryForStream(
                 String.format(QueriesPackage.GET_STATIONS_BY_BUS_ID, id),
-                BeanPropertyRowMapper.newInstance(Station.class)).toList();
+                new StationMapper()).toList();
     }
 
     public Bus updateBusById(Bus obj) {
@@ -42,7 +43,7 @@ public class BusRepository{
 
         return jdbcTemplate.queryForObject(
                 String.format("select * from bus_db.buses where id = %d", obj.getId()),
-                BeanPropertyRowMapper.newInstance(Bus.class)
+                new BusMapper()
         );
     }
 }
