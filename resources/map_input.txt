@@ -1,0 +1,10 @@
+1 first_string
+81 second_string
+19 third_string
+144 fourth_string
+58 fifth_string
+932 sixth_string
+40 seventh_string
+2891 eighth_string
+0 ninth_string
+-720 tenth_string

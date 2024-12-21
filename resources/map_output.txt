@@ -1,0 +1,27 @@
+Reading map: {144=fourth_string, 0=ninth_string, 1=first_string, 81=second_string, 19=third_string, 932=sixth_string, 40=seventh_string, 58=fifth_string, 2891=eighth_string, -720=tenth_string}
+Adding some values: {0=ninth_string, 32=first_string, -1=eleventh_string, 1=first_string, 98=eighth_string, 932=sixth_string, 40=seventh_string, 2891=eighth_string, 75=fifth_string, -720=tenth_string, 144=fourth_string, 81=second_string, -882=second_string, 19=third_string, 58=fifth_string}
+Iterating in map:
+	0=ninth_string
+	32=first_string
+	-1=eleventh_string
+	1=first_string
+	98=eighth_string
+	932=sixth_string
+	40=seventh_string
+	2891=eighth_string
+	75=fifth_string
+	-720=tenth_string
+	144=fourth_string
+	81=second_string
+	-882=second_string
+	19=third_string
+	58=fifth_string
+Adding key duplicate 932
+Making set with all keys: [0, 32, -1, 1, 98, 932, 40, 2891, 75, -720, 144, 81, -882, 19, 58]
+Making set of all values: [fourth_string, second_string, third_string, fifth_string, first_string, tenth_string, ninth_string, eleventh_string, eighth_string, some_string, seventh_string]
+Unique values count: 11
+Is map contains a key '40'? - true
+Is map contains a value 'fourteenth_string'? - false
+Map size is 15
+Element '2891 - eighth_string' was removed!
+Final result: {0=ninth_string, 32=first_string, -1=eleventh_string, 1=first_string, 98=eighth_string, 932=some_string, 40=seventh_string, 75=fifth_string, -720=tenth_string, 144=fourth_string, 81=second_string, -882=second_string, 19=third_string, 58=fifth_string}
