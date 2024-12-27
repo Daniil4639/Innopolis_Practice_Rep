@@ -1,4 +1,4 @@
-package app.figures;
+package app.interfaces;
 
 public interface Movable {
 

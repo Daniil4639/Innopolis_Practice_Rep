@@ -1,5 +1,7 @@
 package app.figures;
 
+import app.interfaces.Movable;
+
 public class Circle extends Ellipse implements Movable {
 
     public Circle(double radius, double x, double y) {

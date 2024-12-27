@@ -1,6 +1,6 @@
 package app.figures;
 
-import java.io.FileWriter;
+import app.interfaces.Movable;
 
 public class Square extends Rectangle implements Movable {
 
