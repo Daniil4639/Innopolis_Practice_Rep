@@ -12,8 +12,8 @@ public class PathMapper implements RowMapper<Path> {
     public Path mapRow(ResultSet rs, int rowNum) throws SQLException {
         return new Path(
                 rs.getInt("id"),
-                rs.getInt("beginStation"),
-                rs.getInt("endStation"),
+                rs.getInt("begin_station"),
+                rs.getInt("end_station"),
                 rs.getInt("duration")
         );
     }

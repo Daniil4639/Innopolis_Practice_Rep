@@ -1,5 +1,7 @@
 package bus_app.controllers;
 
+import bus_app.exceptions.IncorrectBodyException;
+import bus_app.exceptions.NoDataException;
 import bus_app.model.*;
 import bus_app.repositories.BusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/bus_rep/buses")
@@ -16,39 +18,63 @@ public class BusController {
     @Autowired
     private BusRepository repository;
 
+    @PostMapping
+    @ResponseStatus(HttpStatus.OK)
+    public Bus addBus(@RequestBody Bus item) throws IncorrectBodyException {
+
+        return repository.createItem(item);
+    }
+
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Bus getBusByNum(@PathVariable("id") Integer id) {
-        Bus res = repository.getBusByNum(id);
-        System.out.println(res);
+    public Bus getBusById(@PathVariable("id") Integer id) throws NoDataException {
 
-        return res;
+        return repository.findItemById(id);
+    }
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<Bus> getAllBuses() {
+
+        return repository.findAllItems();
+    }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Bus updateBusById(@PathVariable("id") Integer id,
+                             @RequestBody Bus item) throws IncorrectBodyException {
+
+        return repository.updateItemById(id, item);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteBusById(@PathVariable("id") Integer id) throws NoDataException {
+
+        repository.deleteItemById(id);
+    }
+
+    @DeleteMapping
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteAllBuses() {
+
+        repository.deleteAllItems();
     }
 
     @GetMapping("/{id}/get_stations")
     @ResponseStatus(HttpStatus.OK)
     public List<Station> getStationsInOrderByBusNumber(@PathVariable("id") Integer id) {
+
         List<Station> res = repository.getStationsByBusNumber(id);
         System.out.println(res);
 
         return res;
     }
 
-    @PutMapping("/{id}")
+    @GetMapping("/group_by/path")
     @ResponseStatus(HttpStatus.OK)
-    public Bus updateBusInfo(@PathVariable("id") Integer id,
-                             @RequestParam("number") Optional<String> number,
-                             @RequestParam("driver_id") Optional<Integer> driverId,
-                             @RequestParam("path_id") Optional<Integer> pathId,
-                             @RequestParam("department_id") Optional<Integer> departmentId,
-                             @RequestParam("seats_number") Optional<Integer> seatsNumber,
-                             @RequestParam("type") Optional<String> type) {
+    public Map<Integer, List<Bus>> getBusesGroupsByPathId() {
 
-        Bus res = repository.updateBusById(new Bus(
-                id, number.orElse(null), driverId.orElse(null), pathId.orElse(null),
-                departmentId.orElse(null), seatsNumber.orElse(null), type.orElse(null)));
-        System.out.println(res);
-
-        return res;
+        return repository.getBusesGroupsByPathId();
     }
 }

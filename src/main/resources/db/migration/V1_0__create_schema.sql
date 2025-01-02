@@ -1,7 +1,7 @@
 /* ------------------------ Таблицы водителей ----------------------- */
 
 CREATE TABLE IF NOT EXISTS drivers (
-    id INT NOT NULL PRIMARY KEY,
+    id SERIAL NOT NULL PRIMARY KEY,
     name VARCHAR(30) NOT NULL,
     age INT NOT NULL,
     phone VARCHAR(20) UNIQUE NOT NULL
@@ -17,7 +17,7 @@ COMMENT ON COLUMN drivers.phone IS 'Телефон водителя';
 /* ------------------------ Таблицы отделений ----------------------- */
 
 CREATE TABLE IF NOT EXISTS departments (
-    id INT NOT NULL PRIMARY KEY,
+    id SERIAL NOT NULL PRIMARY KEY,
     name VARCHAR(30) NOT NULL,
     address VARCHAR(40) NOT NULL
 );
@@ -31,7 +31,7 @@ COMMENT ON COLUMN departments.address IS 'Адрес отделения';
 /* ------------------------ Таблицы остановок ----------------------- */
 
 CREATE TABLE IF NOT EXISTS stations (
-    id INT NOT NULL PRIMARY KEY,
+    id SERIAL NOT NULL PRIMARY KEY,
     name VARCHAR(30) NOT NULL,
     district VARCHAR(30) NOT NULL
 );
@@ -45,7 +45,7 @@ COMMENT ON COLUMN stations.district IS 'Район, в котором распо
 /* ------------------------ Таблицы маршрутов ----------------------- */
 
 CREATE TABLE IF NOT EXISTS paths (
-    id INT NOT NULL PRIMARY KEY,
+    id SERIAL NOT NULL PRIMARY KEY,
     begin_station INT,
     end_station INT,
     duration INT NOT NULL,
@@ -63,7 +63,7 @@ COMMENT ON COLUMN paths.duration IS 'Продолжительность марш
 /* ------------------------ Таблицы автобусов ----------------------- */
 
 CREATE TABLE IF NOT EXISTS buses (
-    id INT NOT NULL PRIMARY KEY,
+    id SERIAL NOT NULL PRIMARY KEY,
     number VARCHAR(5) NOT NULL,
     driver_id INT,
     path_id INT,
