@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS notes (
+    id SERIAL NOT NULL PRIMARY KEY,
+    date_and_time TIMESTAMP NOT NULL,
+    topic VARCHAR(20) NOT NULL,
+    text VARCHAR NOT NULL
+);
