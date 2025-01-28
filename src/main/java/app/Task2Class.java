@@ -4,9 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Task2Class {
@@ -35,16 +33,23 @@ public class Task2Class {
 
     // метод подсчета встречаемости слов и их сортировки
     private static List<String> findTopWords(List<String> text, int topSize) {
-        return text.stream()
+
+        // сравнивает пары <String, Long> сначала по числу (Value), а затем лексикографически по строке (Key)
+        Comparator<Map.Entry<String, Long>> wordsComparator = (elem1, elem2) ->
+                (!elem1.getValue().equals(elem2.getValue())) ?
+                        (Long.compare(elem2.getValue(), elem1.getValue())) :
+                        (elem1.getKey().compareTo(elem2.getKey()));
+
+        // разделяет текст на слова и группирует их по числу появлений в тексте
+        Set<Map.Entry<String, Long>> wordsAndCountInText = text.stream()
                 .flatMap(elem -> Arrays.stream(elem.split("\\W+")))
                 .map(String::toLowerCase)
                 .collect(Collectors.groupingBy(elem -> elem, Collectors.counting()))
-                .entrySet()
-                .stream()
-                .sorted((elem1, elem2) ->
-                        (!elem1.getValue().equals(elem2.getValue())) ?
-                                (Long.compare(elem2.getValue(), elem1.getValue())) :
-                                (elem1.getKey().compareTo(elem2.getKey())))
+                .entrySet();
+
+        // сортирует слова и выбирает первые n
+        return wordsAndCountInText.stream()
+                .sorted(wordsComparator)
                 .limit(topSize)
                 .map(Map.Entry::getKey)
                 .toList();
