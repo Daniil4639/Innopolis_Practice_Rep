@@ -1,5 +1,6 @@
 package app.configs;
 
+import app.configs.web_config.WebConfig;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 public class SpringWebInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {

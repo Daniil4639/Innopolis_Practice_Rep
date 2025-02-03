@@ -1,28 +1,22 @@
 package app.repositories_tests;
 
+import app.repositories_tests.abstracts.TestDBContainerInitializer;
 import app.exceptions.IncorrectBodyException;
 import app.exceptions.NoDataException;
 import app.mappers.StudentMapper;
 import app.models.Student;
-import app.repositories.GradeRepository;
-import app.repositories.StudentRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-public class StudentRepositoryCorrectTest extends TestDBContainerInitializer {
-
-    private final StudentRepository repository;
-    private final JdbcTemplate template;
+public class StudentRepositoryCorrectTest extends TestDBContainerInitializer{
 
     public StudentRepositoryCorrectTest() {
-        template = new JdbcTemplate(TestDBContainerInitializer.source);
-        repository = new StudentRepository(template, new GradeRepository(template));
+        super();
     }
 
     @BeforeAll

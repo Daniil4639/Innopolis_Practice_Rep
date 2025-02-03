@@ -1,6 +1,5 @@
 package app.repositories;
 
-import app.exceptions.IncorrectBodyException;
 import app.exceptions.NoDataException;
 import app.mappers.StudentMapper;
 import app.models.Student;
@@ -14,17 +13,12 @@ import java.util.Arrays;
 public class StudentRepository {
 
     private final JdbcTemplate template;
-    private final GradeRepository gradeRepository;
 
-    public StudentRepository(JdbcTemplate template, GradeRepository gradeRepository) {
+    public StudentRepository(JdbcTemplate template) {
         this.template = template;
-        this.gradeRepository = gradeRepository;
     }
 
-    public Student createStudent(Student student) throws IncorrectBodyException, NoDataException {
-        Student.isStudentCorrect(student);
-        checkGradeIds(student.gradesList());
-
+    public Student createStudent(Student student) {
         return template.queryForObject(
                 String.format("insert into students values(default, '%s', '%s', ARRAY%s) returning *",
                         student.fullName(),
@@ -46,19 +40,7 @@ public class StudentRepository {
         }
     }
 
-    public Student updateStudent(Integer id, Student student) throws IncorrectBodyException, NoDataException {
-        if (student.gradesList() != null) {
-            checkGradeIds(student.gradesList());
-        }
-
-        Student.checkValidation(student);
-
-        try {
-            readStudent(id);
-        } catch (NoDataException ex) {
-            createStudent(student);
-        }
-
+    public Student updateStudent(Integer id, Student student) {
         return template.queryForObject(
                 String.format("update students set full_name = %s, email = %s, grades_list = %s where id = %d returning *",
                         (student.fullName() != null) ? ("'" + student.fullName() + "'") : ("full_name"),
@@ -69,9 +51,7 @@ public class StudentRepository {
         );
     }
 
-    public Student addGrade(Integer id, Integer gradeId) throws NoDataException {
-        gradeRepository.readGrade(gradeId);
-
+    public Student addGrade(Integer id, Integer gradeId) {
         return template.queryForObject(
                 "update students set grades_list = array_append(grades_list, ?) where id = ? returning *",
                 new StudentMapper(),
@@ -80,17 +60,9 @@ public class StudentRepository {
         );
     }
 
-    public boolean deleteStudent(Integer id) throws NoDataException {
-        readStudent(id);
-
+    public boolean deleteStudent(Integer id) {
         template.execute(String.format("delete from students where id = %d", id));
 
         return true;
-    }
-
-    private void checkGradeIds(Integer[] gradesList) throws NoDataException {
-        for (Integer id: gradesList) {
-            gradeRepository.readGrade(id);
-        }
     }
 }

@@ -16,13 +16,15 @@ public class GradeRepository {
         this.template = template;
     }
 
-    public Grade readGrade(Integer id) throws NoDataException {
+    public boolean gradeIsExist(Integer id) throws NoDataException {
         try {
-            return template.queryForObject(
+            template.queryForObject(
                     "select * from grades where id = ?",
                     new GradeMapper(),
                     id
             );
+
+            return true;
         } catch (EmptyResultDataAccessException ex) {
             throw new NoDataException("No record with id = " + id);
         }
