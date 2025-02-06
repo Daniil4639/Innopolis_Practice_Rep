@@ -6,8 +6,12 @@
 
     <groupId>app</groupId>
     <artifactId>Innopolis_Practice</artifactId>
-    <packaging>war</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <modules>
+        <module>grades_module</module>
+        <module>students_module</module>
+    </modules>
+    <version>1.0</version>
 
     <build>
         <plugins>
@@ -32,7 +36,7 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.4.0</version>
                 <configuration>
-                    <warSourceDirectory>src/main/webapp</warSourceDirectory>
+                    <warSourceDirectory>students_module/src/main/webapp</warSourceDirectory>
                 </configuration>
             </plugin>
         </plugins>
