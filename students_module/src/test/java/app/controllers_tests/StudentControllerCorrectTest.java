@@ -9,6 +9,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class StudentControllerCorrectTest extends StudentControllerAbstractTest {
 
     @Test
@@ -91,5 +94,21 @@ public class StudentControllerCorrectTest extends StudentControllerAbstractTest 
         mockMvc.perform(MockMvcRequestBuilders.delete("/students/1"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string("Record has been deleted!"));
+    }
+
+    @Test
+    @DisplayName("Students: get all by grade test")
+    public void getAllByGradeTest() throws Exception {
+        Student student = new Student(
+                1, "test_user", "new_test_email", new Integer[] {1, 2}
+        );
+        List<Student> students = new ArrayList<>(List.of(student));
+
+        Mockito.when(service.getAllStudents(1)).thenReturn(students);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/students")
+                .param("grade_id", "1"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].fullName").value("test_user"));
     }
 }

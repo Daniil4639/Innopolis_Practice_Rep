@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Repository
 public class StudentRepository {
@@ -64,5 +65,13 @@ public class StudentRepository {
         template.execute(String.format("delete from students where id = %d", id));
 
         return true;
+    }
+
+    public List<Student> getAllStudentsByGrade(Integer id) {
+        return template.query(
+                "select * from students where ?=any(grades_list)",
+                new StudentMapper(),
+                id
+        );
     }
 }

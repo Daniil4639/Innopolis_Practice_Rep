@@ -8,7 +8,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class StudentServiceCorrectTest extends StudentServiceAbstractTest {
 
@@ -81,5 +83,20 @@ public class StudentServiceCorrectTest extends StudentServiceAbstractTest {
         Student receivedStudent = service.addGrade(1, 2);
 
         assert Arrays.equals(receivedStudent.gradesList(), student.gradesList());
+    }
+
+    @Test
+    @DisplayName("Students: service get all test")
+    public void getAllTest() {
+        Student student = new Student(
+                1, "test_user", "new_test_email", new Integer[] {1, 2}
+        );
+        List<Student> students = new ArrayList<>(List.of(student));
+
+        Mockito.when(studentRepository.getAllStudentsByGrade(1)).thenReturn(students);
+
+        List<Student> students1 = service.getAllStudents(1);
+
+        assert students1.equals(students);
     }
 }

@@ -9,6 +9,9 @@ import app.services.StudentService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.logging.Logger;
+
 @RestController
 @RequestMapping("/students")
 public class StudentController {
@@ -69,5 +72,10 @@ public class StudentController {
     @DeleteMapping("/logout")
     public void logout(HttpSession session) {
         session.invalidate();
+    }
+
+    @GetMapping
+    public List<Student> getAllStudents(@RequestParam("grade_id") Integer id) throws NoDataException {
+        return service.getAllStudents(id);
     }
 }

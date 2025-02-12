@@ -1,5 +1,6 @@
 package app.services;
 
+import app.aspects.LogExecTime;
 import app.clients.GradeClient;
 import app.exceptions.IncorrectBodyException;
 import app.exceptions.NoDataException;
@@ -7,6 +8,8 @@ import app.models.Student;
 import app.repositories.StudentRepository;
 import app.services.interfaces.BasedCRUDService;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class StudentService implements BasedCRUDService<Student> {
@@ -20,6 +23,7 @@ public class StudentService implements BasedCRUDService<Student> {
     }
 
     @Override
+    @LogExecTime
     public Student create(Student obj) throws IncorrectBodyException, NoDataException {
         Student.isStudentCorrect(obj);
         for (Integer gradeId: obj.gradesList()) {
@@ -60,10 +64,17 @@ public class StudentService implements BasedCRUDService<Student> {
         return studentRepository.deleteStudent(id);
     }
 
+    @LogExecTime
     public Student addGrade(Integer id, Integer gradeId) throws NoDataException {
         checkGradeId(gradeId);
 
         return studentRepository.addGrade(id, gradeId);
+    }
+
+    @LogExecTime
+    public List<Student> getAllStudents(Integer id) throws NoDataException {
+        checkGradeId(id);
+        return studentRepository.getAllStudentsByGrade(id);
     }
 
     private void checkGradeId(Integer id) throws NoDataException {

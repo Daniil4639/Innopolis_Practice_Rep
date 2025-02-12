@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class StudentRepositoryCorrectTest extends TestDBContainerInitializer{
@@ -103,5 +104,21 @@ public class StudentRepositoryCorrectTest extends TestDBContainerInitializer{
 
             assert false;
         } catch (EmptyResultDataAccessException ignored) {}
+    }
+
+    @Test
+    @DisplayName("Students: correct get all students test")
+    public void getAllTest() {
+        template.execute("delete from students");
+        template.execute("insert into students values(default, 'test_user_1', 'test_email', ARRAY[1])");
+        template.execute("insert into students values(default, 'test_user_2', 'test_email', ARRAY[1])");
+
+        List<String> students = repository.getAllStudentsByGrade(1).stream()
+                .map(Student::fullName)
+                .toList();
+
+        assert students.size() == 2;
+        assert students.contains("test_user_1");
+        assert students.contains("test_user_2");
     }
 }
