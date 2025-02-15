@@ -29,9 +29,9 @@ public class GradeRepositoryCorrectTest extends TestDBContainerInitializer {
 
         Grade grade = repository.readGrade(id);
 
-        assert grade.isActive().equals(true);
-        assert grade.name().equals("test_name");
-        assert grade.startDate().toString().equals("2025-02-02");
+        assert grade.getIsActive().equals(true);
+        assert grade.getName().equals("test_name");
+        assert grade.getStartDate().toString().equals("2025-02-02");
     }
 
     @Test
@@ -44,7 +44,7 @@ public class GradeRepositoryCorrectTest extends TestDBContainerInitializer {
 
         Grade grade = repository.makeGradeActive(id);
 
-        assert grade.isActive().equals(true);
+        assert grade.getIsActive().equals(true);
     }
 
     @Test
@@ -57,6 +57,6 @@ public class GradeRepositoryCorrectTest extends TestDBContainerInitializer {
 
         Grade grade = repository.makeGradeNonActive(id);
 
-        assert grade.isActive().equals(false);
+        assert grade.getIsActive().equals(false);
     }
 }

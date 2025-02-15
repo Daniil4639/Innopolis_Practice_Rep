@@ -20,9 +20,9 @@ public class GradeServiceCorrectTest extends GradeServiceAbstractTest {
 
         Grade receivedGrade = service.readGrade(1);
 
-        assert receivedGrade.name().equals(grade.name());
-        assert receivedGrade.startDate().equals(grade.startDate());
-        assert receivedGrade.isActive().equals(grade.isActive());
+        assert receivedGrade.getName().equals(grade.getName());
+        assert receivedGrade.getStartDate().equals(grade.getStartDate());
+        assert receivedGrade.getIsActive().equals(grade.getIsActive());
     }
 
     @Test
@@ -33,7 +33,7 @@ public class GradeServiceCorrectTest extends GradeServiceAbstractTest {
         Mockito.when(repository.makeGradeActive(1)).thenReturn(grade);
 
         Grade receivedGrade = service.makeGradeActive(1);
-        assert receivedGrade.isActive().equals(true);
+        assert receivedGrade.getIsActive().equals(true);
     }
 
     @Test
@@ -44,6 +44,6 @@ public class GradeServiceCorrectTest extends GradeServiceAbstractTest {
         Mockito.when(repository.makeGradeNonActive(1)).thenReturn(grade);
 
         Grade receivedGrade = service.makeGradeNonActive(1);
-        assert receivedGrade.isActive().equals(false);
+        assert receivedGrade.getIsActive().equals(false);
     }
 }

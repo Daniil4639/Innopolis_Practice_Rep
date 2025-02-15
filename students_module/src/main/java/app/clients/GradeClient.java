@@ -2,17 +2,15 @@ package app.clients;
 
 import app.exceptions.NoDataException;
 import app.models.Grade;
-import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
-@Component
 public class GradeClient {
 
     private final RestClient client;
 
-    public GradeClient() {
+    public GradeClient(String url) {
         client = RestClient.builder()
-                .baseUrl("http://localhost:8080/grades_module/grades/")
+                .baseUrl(url)
                 .build();
     }
 

@@ -3,17 +3,15 @@ package app.controllers;
 import app.dto.GradeDto;
 import app.exceptions.NoDataException;
 import app.services.GradeService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/grades")
+@RequiredArgsConstructor
 public class GradeController {
 
     private final GradeService service;
-
-    public GradeController(GradeService service) {
-        this.service = service;
-    }
 
     @GetMapping("/{id}")
     public GradeDto readGrade(@PathVariable("id") Integer id) throws NoDataException {

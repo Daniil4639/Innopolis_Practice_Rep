@@ -36,12 +36,12 @@ public class StudentRepositoryCorrectTest extends TestDBContainerInitializer{
         Student receivedStudent = template.queryForObject(
                 "select * from students where id = ?",
                 new StudentMapper(),
-                student.id()
+                student.getId()
         );
 
-        assert (student.email().equals(receivedStudent.email()));
-        assert (student.fullName().equals(receivedStudent.fullName()));
-        assert (Arrays.equals(student.gradesList(), receivedStudent.gradesList()));
+        assert (student.getEmail().equals(receivedStudent.getEmail()));
+        assert (student.getFullName().equals(receivedStudent.getFullName()));
+        assert (Arrays.equals(student.getGradesList(), receivedStudent.getGradesList()));
     }
 
     @Test
@@ -53,9 +53,9 @@ public class StudentRepositoryCorrectTest extends TestDBContainerInitializer{
         );
 
         Student student = repository.readStudent(id);
-        assert (student.fullName().equals("test_user"));
-        assert (student.email().equals("test_email"));
-        assert (Arrays.stream(student.gradesList()).collect(Collectors.toSet()).contains(1));
+        assert (student.getFullName().equals("test_user"));
+        assert (student.getEmail().equals("test_email"));
+        assert (Arrays.stream(student.getGradesList()).collect(Collectors.toSet()).contains(1));
     }
 
     @Test
@@ -69,7 +69,7 @@ public class StudentRepositoryCorrectTest extends TestDBContainerInitializer{
         Student student = repository.updateStudent(id,
                 new Student(null, "newTestName testSecondName testThirdName", null, null));
 
-        assert (student.fullName().equals("newTestName testSecondName testThirdName"));
+        assert (student.getFullName().equals("newTestName testSecondName testThirdName"));
     }
 
     @Test
@@ -82,7 +82,7 @@ public class StudentRepositoryCorrectTest extends TestDBContainerInitializer{
 
         Student student = repository.addGrade(id, 2);
 
-        assert (Arrays.stream(student.gradesList()).collect(Collectors.toSet()).contains(2));
+        assert (Arrays.stream(student.getGradesList()).collect(Collectors.toSet()).contains(2));
     }
 
     @Test
@@ -114,7 +114,7 @@ public class StudentRepositoryCorrectTest extends TestDBContainerInitializer{
         template.execute("insert into students values(default, 'test_user_2', 'test_email', ARRAY[1])");
 
         List<String> students = repository.getAllStudentsByGrade(1).stream()
-                .map(Student::fullName)
+                .map(Student::getFullName)
                 .toList();
 
         assert students.size() == 2;

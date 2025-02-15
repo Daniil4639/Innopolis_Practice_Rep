@@ -29,8 +29,8 @@ public class StudentServiceCorrectTest extends StudentServiceAbstractTest {
 
         Student receivedStudent = service.create(student);
 
-        assert receivedStudent.fullName().equals(student.fullName());
-        assert receivedStudent.email().equals(student.email());
+        assert receivedStudent.getFullName().equals(student.getFullName());
+        assert receivedStudent.getEmail().equals(student.getEmail());
     }
 
     @Test
@@ -44,8 +44,8 @@ public class StudentServiceCorrectTest extends StudentServiceAbstractTest {
 
         Student receivedStudent = service.read(1);
 
-        assert receivedStudent.fullName().equals(student.fullName());
-        assert receivedStudent.email().equals(student.email());
+        assert receivedStudent.getFullName().equals(student.getFullName());
+        assert receivedStudent.getEmail().equals(student.getEmail());
     }
 
     @Test
@@ -59,8 +59,8 @@ public class StudentServiceCorrectTest extends StudentServiceAbstractTest {
 
         Student receivedStudent = service.update(1, student);
 
-        assert receivedStudent.fullName().equals(student.fullName());
-        assert receivedStudent.email().equals(student.email());
+        assert receivedStudent.getFullName().equals(student.getFullName());
+        assert receivedStudent.getEmail().equals(student.getEmail());
     }
 
     @Test
@@ -82,7 +82,7 @@ public class StudentServiceCorrectTest extends StudentServiceAbstractTest {
 
         Student receivedStudent = service.addGrade(1, 2);
 
-        assert Arrays.equals(receivedStudent.gradesList(), student.gradesList());
+        assert Arrays.equals(receivedStudent.getGradesList(), student.getGradesList());
     }
 
     @Test

@@ -7,26 +7,23 @@ import app.exceptions.NoDataException;
 import app.models.Student;
 import app.repositories.StudentRepository;
 import app.services.interfaces.BasedCRUDService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class StudentService implements BasedCRUDService<Student> {
 
     private final StudentRepository studentRepository;
     private final GradeClient gradeClient;
 
-    public StudentService(StudentRepository studentRepository, GradeClient gradeClient) {
-        this.studentRepository = studentRepository;
-        this.gradeClient = gradeClient;
-    }
-
     @Override
     @LogExecTime
     public Student create(Student obj) throws IncorrectBodyException, NoDataException {
         Student.isStudentCorrect(obj);
-        for (Integer gradeId: obj.gradesList()) {
+        for (Integer gradeId: obj.getGradesList()) {
             checkGradeId(gradeId);
         }
 
@@ -40,8 +37,8 @@ public class StudentService implements BasedCRUDService<Student> {
 
     @Override
     public Student update(Integer id, Student obj) throws IncorrectBodyException, NoDataException {
-        if (obj.gradesList() != null) {
-            for (Integer gradeId: obj.gradesList()) {
+        if (obj.getGradesList() != null) {
+            for (Integer gradeId: obj.getGradesList()) {
                 checkGradeId(gradeId);
             }
         }

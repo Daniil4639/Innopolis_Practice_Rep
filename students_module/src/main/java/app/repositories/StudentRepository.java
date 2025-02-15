@@ -3,6 +3,7 @@ package app.repositories;
 import app.exceptions.NoDataException;
 import app.mappers.StudentMapper;
 import app.models.Student;
+import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -11,20 +12,17 @@ import java.util.Arrays;
 import java.util.List;
 
 @Repository
+@RequiredArgsConstructor
 public class StudentRepository {
 
     private final JdbcTemplate template;
 
-    public StudentRepository(JdbcTemplate template) {
-        this.template = template;
-    }
-
     public Student createStudent(Student student) {
         return template.queryForObject(
                 String.format("insert into students values(default, '%s', '%s', ARRAY%s) returning *",
-                        student.fullName(),
-                        student.email(),
-                        Arrays.toString(student.gradesList())),
+                        student.getFullName(),
+                        student.getEmail(),
+                        Arrays.toString(student.getGradesList())),
                 new StudentMapper()
         );
     }
@@ -44,9 +42,9 @@ public class StudentRepository {
     public Student updateStudent(Integer id, Student student) {
         return template.queryForObject(
                 String.format("update students set full_name = %s, email = %s, grades_list = %s where id = %d returning *",
-                        (student.fullName() != null) ? ("'" + student.fullName() + "'") : ("full_name"),
-                        (student.email() != null) ? ("'" + student.email() + "'") : ("email"),
-                        (student.gradesList() != null) ? ("ARRAY" + Arrays.toString(student.gradesList())) : ("grades_list"),
+                        (student.getFullName() != null) ? ("'" + student.getFullName() + "'") : ("full_name"),
+                        (student.getEmail() != null) ? ("'" + student.getEmail() + "'") : ("email"),
+                        (student.getGradesList() != null) ? ("ARRAY" + Arrays.toString(student.getGradesList())) : ("grades_list"),
                         id),
                 new StudentMapper()
         );

@@ -1,13 +1,24 @@
 package app.models;
 
 import app.exceptions.IncorrectBodyException;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Arrays;
 
-public record Student (Integer id, String fullName, String email, Integer[] gradesList) {
+@Getter
+@Setter
+@AllArgsConstructor
+public class Student {
+
+    private Integer id;
+    private String fullName;
+    private String email;
+    private Integer[] gradesList;
 
     public static void isStudentCorrect(Student student) throws IncorrectBodyException {
-        if (student.fullName() == null || student.email == null || student.gradesList == null) {
+        if (student.getFullName() == null || student.email == null || student.gradesList == null) {
             throw new IncorrectBodyException("Incorrect received body");
         }
 
@@ -15,11 +26,11 @@ public record Student (Integer id, String fullName, String email, Integer[] grad
     }
 
     public static void checkValidation(Student student) throws IncorrectBodyException {
-        if (student.fullName() != null && !student.fullName().matches("[a-zA-Zа-яА-Я]* [a-zA-Zа-яА-Я]* [a-zA-Zа-яА-Я]*")) {
+        if (student.getFullName() != null && !student.getFullName().matches("[a-zA-Zа-яА-Я]* [a-zA-Zа-яА-Я]* [a-zA-Zа-яА-Я]*")) {
             throw new IncorrectBodyException("Incorrect received body");
         }
 
-        if (student.email() != null && !student.email().matches("^\\S+@\\S+\\.\\S+$")) {
+        if (student.getEmail() != null && !student.getEmail().matches("^\\S+@\\S+\\.\\S+$")) {
             throw new IncorrectBodyException("Incorrect received body");
         }
     }

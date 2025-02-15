@@ -1,33 +1,29 @@
 package app.controllers;
 
-import app.configs.web_config.SessionData;
+import app.configs.SessionData;
 import app.exceptions.IncorrectBodyException;
 import app.exceptions.NoAuthorizationException;
 import app.exceptions.NoDataException;
 import app.models.Student;
 import app.services.StudentService;
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/students")
+@RequiredArgsConstructor
 public class StudentController {
 
     private final StudentService service;
     private final SessionData sessionData;
 
-    public StudentController(StudentService service, SessionData sessionData) {
-        this.service = service;
-        this.sessionData = sessionData;
-    }
-
     @PostMapping
     public Student createStudent(@RequestBody Student student) throws IncorrectBodyException, NoDataException {
         Student newStudent = service.create(student);
-        sessionData.setSessionId(newStudent.id());
+        sessionData.setSessionId(newStudent.getId());
 
         return newStudent;
     }
@@ -35,7 +31,7 @@ public class StudentController {
     @GetMapping("/{id}")
     public Student getStudent(@PathVariable("id") Integer id) throws NoDataException {
         Student newStudent = service.read(id);
-        sessionData.setSessionId(newStudent.id());
+        sessionData.setSessionId(newStudent.getId());
 
         return newStudent;
     }

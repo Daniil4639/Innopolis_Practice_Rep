@@ -1,8 +1,7 @@
 package app.controllers_tests.abstracts;
 
-import app.configs.SpringWebInitializer;
-import app.configs.web_config.SessionData;
-import app.configs.web_config.WebConfig;
+import app.configs.SessionData;
+import app.controllers.StudentController;
 import app.services.StudentService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletContext;
@@ -12,27 +11,25 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockServletContext;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {SpringWebInitializer.class, WebConfig.class})
-@WebAppConfiguration
+@WebMvcTest(controllers = StudentController.class)
 public class StudentControllerAbstractTest {
 
     @Autowired
     protected WebApplicationContext webApplicationContext;
 
-    @MockitoBean
+    @MockBean
     protected StudentService service;
 
-    @MockitoBean
+    @MockBean
     protected SessionData sessionData;
 
     protected MockMvc mockMvc;
