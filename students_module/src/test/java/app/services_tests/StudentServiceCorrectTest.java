@@ -22,14 +22,15 @@ public class StudentServiceCorrectTest extends StudentServiceAbstractTest {
     @DisplayName("Students: service correct create")
     public void createTest() throws IncorrectBodyException, NoDataException {
         Student student = new Student(
-                1, "TestName TestSecondName TestThirdName", "test_email@test.ru", new Integer[] {1}
+                1, "TestName TestSecondName TestThirdName", 19, "test_email@test.ru", new Integer[] {1}
         );
 
-        Mockito.when(studentRepository.createStudent(student)).thenReturn(student);
+        Mockito.when(studentJdbcRepository.createStudent(student)).thenReturn(student);
 
         Student receivedStudent = service.create(student);
 
         assert receivedStudent.getFullName().equals(student.getFullName());
+        assert receivedStudent.getAge().equals(student.getAge());
         assert receivedStudent.getEmail().equals(student.getEmail());
     }
 
@@ -37,14 +38,15 @@ public class StudentServiceCorrectTest extends StudentServiceAbstractTest {
     @DisplayName("Students: service correct read")
     public void readTest() throws NoDataException {
         Student student = new Student(
-                1, "TestName TestSecondName TestThirdName", "test_email@test.ru", new Integer[] {1}
+                1, "TestName TestSecondName TestThirdName", 19, "test_email@test.ru", new Integer[] {1}
         );
 
-        Mockito.when(studentRepository.readStudent(1)).thenReturn(student);
+        Mockito.when(studentJdbcRepository.readStudent(1)).thenReturn(student);
 
         Student receivedStudent = service.read(1);
 
         assert receivedStudent.getFullName().equals(student.getFullName());
+        assert receivedStudent.getAge().equals(student.getAge());
         assert receivedStudent.getEmail().equals(student.getEmail());
     }
 
@@ -52,21 +54,22 @@ public class StudentServiceCorrectTest extends StudentServiceAbstractTest {
     @DisplayName("Students: service correct update")
     public void updateTest() throws IncorrectBodyException, NoDataException {
         Student student = new Student(
-                1, "TestName TestSecondName TestThirdName", "test_email@test.ru", new Integer[] {1}
+                1, "TestName TestSecondName TestThirdName", 19, "test_email@test.ru", new Integer[] {1}
         );
 
-        Mockito.when(studentRepository.updateStudent(1, student)).thenReturn(student);
+        Mockito.when(studentJdbcRepository.updateStudent(1, student)).thenReturn(student);
 
         Student receivedStudent = service.update(1, student);
 
         assert receivedStudent.getFullName().equals(student.getFullName());
+        assert receivedStudent.getAge().equals(student.getAge());
         assert receivedStudent.getEmail().equals(student.getEmail());
     }
 
     @Test
     @DisplayName("Students: service correct delete")
     public void deleteTest() throws NoDataException {
-        Mockito.when(studentRepository.deleteStudent(1)).thenReturn(true);
+        Mockito.when(studentJdbcRepository.deleteStudent(1)).thenReturn(true);
 
         assert service.delete(1);
     }
@@ -75,10 +78,10 @@ public class StudentServiceCorrectTest extends StudentServiceAbstractTest {
     @DisplayName("Students: service correct add grade")
     public void addGradeTest() throws NoDataException {
         Student student = new Student(
-                1, "TestName TestSecondName TestThirdName", "test_email@test.ru", new Integer[] {1, 2}
+                1, "TestName TestSecondName TestThirdName", 19, "test_email@test.ru", new Integer[] {1, 2}
         );
 
-        Mockito.when(studentRepository.addGrade(1, 2)).thenReturn(student);
+        Mockito.when(studentJdbcRepository.addGrade(1, 2)).thenReturn(student);
 
         Student receivedStudent = service.addGrade(1, 2);
 
@@ -89,14 +92,102 @@ public class StudentServiceCorrectTest extends StudentServiceAbstractTest {
     @DisplayName("Students: service get all test")
     public void getAllTest() {
         Student student = new Student(
-                1, "test_user", "new_test_email", new Integer[] {1, 2}
+                1, "test_user", 19, "new_test_email", new Integer[] {1, 2}
         );
         List<Student> students = new ArrayList<>(List.of(student));
 
-        Mockito.when(studentRepository.getAllStudentsByGrade(1)).thenReturn(students);
+        Mockito.when(studentJdbcRepository.getAllStudentsByGrade(1)).thenReturn(students);
 
         List<Student> students1 = service.getAllStudents(1);
 
         assert students1.equals(students);
+    }
+
+    @Test
+    @DisplayName("Students: service more age test")
+    public void moreAgeTest() {
+        Student student = new Student(
+                1, "test_user", 19, "new_test_email", new Integer[] {1, 2}
+        );
+        List<Student> students = new ArrayList<>(List.of(student));
+
+        Mockito.when(studentJpaRepository.findStudentsWithMoreThanAge(18))
+                .thenReturn(students);
+
+        List<Student> receivedList = service.getAllByAge(18, "more");
+        assert receivedList.equals(students);
+    }
+
+    @Test
+    @DisplayName("Students: service less age test")
+    public void lessAgeTest() {
+        Student student = new Student(
+                1, "test_user", 19, "new_test_email", new Integer[] {1, 2}
+        );
+        List<Student> students = new ArrayList<>(List.of(student));
+
+        Mockito.when(studentJpaRepository.findStudentsWithLessThanAge(20))
+                .thenReturn(students);
+
+        List<Student> receivedList = service.getAllByAge(20, "less");
+        assert receivedList.equals(students);
+    }
+
+    @Test
+    @DisplayName("Students: service equal age test")
+    public void equalAgeTest() {
+        Student student = new Student(
+                1, "test_user", 19, "new_test_email", new Integer[] {1, 2}
+        );
+        List<Student> students = new ArrayList<>(List.of(student));
+
+        Mockito.when(studentJpaRepository.findStudentsWithAge(19))
+                .thenReturn(students);
+
+        List<Student> receivedList = service.getAllByAge(19, "equal");
+        assert receivedList.equals(students);
+    }
+
+    @Test
+    @DisplayName("Students: service count test")
+    public void countTest() {
+        Mockito.when(studentJpaRepository.count()).thenReturn(12L);
+
+        assert service.getStudentsCount() == 12;
+    }
+
+    @Test
+    @DisplayName("Students: service names sort test")
+    public void namesSortTest() {
+        List<Student> students = new ArrayList<>(List.of(
+                new Student(
+                        1, "test_user_2", 19, "new_test_email", new Integer[] {1, 2}
+                ),
+                new Student(
+                        2, "test_user_1", 19, "new_test_email", new Integer[] {1, 2}
+                )
+        ));
+
+        Mockito.when(studentJpaRepository.findByOrderByFullName()).thenReturn(students);
+
+        assert service.getStudentsSortedByFullName().equals(students);
+    }
+
+    @Test
+    @DisplayName("Students: service top email test")
+    public void topEmailTest() {
+        List<Student> students = new ArrayList<>(List.of(
+                new Student(
+                        1, "test_user_2", 19, "new_test_email_longest", new Integer[] {1, 2}
+                ),
+                new Student(
+                        2, "test_user_1", 19, "new_test_email", new Integer[] {1, 2}
+                )
+        ));
+
+        Mockito.when(studentJpaRepository.findTop1ByEmail()).thenReturn(students);
+        Mockito.when(studentJpaRepository.count()).thenReturn(2L);
+
+        assert service.getStudentWithLongestEmail().getEmail().equals("new_test_email_longest");
     }
 }

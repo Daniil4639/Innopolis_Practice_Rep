@@ -5,9 +5,11 @@ import app.clients.GradeClient;
 import app.exceptions.IncorrectBodyException;
 import app.exceptions.NoDataException;
 import app.models.Student;
-import app.repositories.StudentRepository;
+import app.repositories.StudentJdbcRepository;
+import app.repositories.StudentJpaRepository;
 import app.services.interfaces.BasedCRUDService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.JpaSort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,7 +18,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StudentService implements BasedCRUDService<Student> {
 
-    private final StudentRepository studentRepository;
+    private final StudentJdbcRepository studentJdbcRepository;
+    private final StudentJpaRepository studentJpaRepository;
     private final GradeClient gradeClient;
 
     @Override
@@ -27,12 +30,12 @@ public class StudentService implements BasedCRUDService<Student> {
             checkGradeId(gradeId);
         }
 
-        return studentRepository.createStudent(obj);
+        return studentJdbcRepository.createStudent(obj);
     }
 
     @Override
     public Student read(Integer id) throws NoDataException {
-        return studentRepository.readStudent(id);
+        return studentJdbcRepository.readStudent(id);
     }
 
     @Override
@@ -46,32 +49,69 @@ public class StudentService implements BasedCRUDService<Student> {
         Student.checkValidation(obj);
 
         try {
-            studentRepository.readStudent(id);
+            studentJdbcRepository.readStudent(id);
         } catch (NoDataException ex) {
-            return studentRepository.createStudent(obj);
+            return studentJdbcRepository.createStudent(obj);
         }
 
-        return studentRepository.updateStudent(id, obj);
+        return studentJdbcRepository.updateStudent(id, obj);
     }
 
     @Override
     public boolean delete(Integer id) throws NoDataException {
-        studentRepository.readStudent(id);
+        studentJdbcRepository.readStudent(id);
 
-        return studentRepository.deleteStudent(id);
+        return studentJdbcRepository.deleteStudent(id);
     }
 
     @LogExecTime
     public Student addGrade(Integer id, Integer gradeId) throws NoDataException {
         checkGradeId(gradeId);
 
-        return studentRepository.addGrade(id, gradeId);
+        return studentJdbcRepository.addGrade(id, gradeId);
     }
 
     @LogExecTime
     public List<Student> getAllStudents(Integer id) throws NoDataException {
         checkGradeId(id);
-        return studentRepository.getAllStudentsByGrade(id);
+        return studentJdbcRepository.getAllStudentsByGrade(id);
+    }
+
+    @LogExecTime
+    public List<Student> getAllByAge(Integer age, String relation) throws IncorrectBodyException {
+        if (age < 18) {
+            throw new IncorrectBodyException("Incorrect received body");
+        }
+
+        switch (relation) {
+            case "more" -> {
+                return studentJpaRepository.findStudentsWithMoreThanAge(age);
+            }
+            case "less" -> {
+                return studentJpaRepository.findStudentsWithLessThanAge(age);
+            }
+            case "equal" -> {
+                return studentJpaRepository.findStudentsWithAge(age);
+            }
+            default -> throw new IncorrectBodyException("Incorrect received body");
+        }
+    }
+
+    public List<Student> getStudentsSortedByFullName() {
+        return studentJpaRepository.findByOrderByFullName();
+    }
+
+    public Integer getStudentsCount() {
+        return Math.toIntExact(studentJpaRepository.count());
+    }
+
+    @LogExecTime
+    public Student getStudentWithLongestEmail() throws NoDataException {
+        if (getStudentsCount().equals(0)) {
+            throw new NoDataException("No records in table Students");
+        }
+
+        return studentJpaRepository.findTop1ByEmail().get(0);
     }
 
     private void checkGradeId(Integer id) throws NoDataException {

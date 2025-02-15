@@ -1,24 +1,39 @@
 package app.models;
 
 import app.exceptions.IncorrectBodyException;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
 
 import java.util.Arrays;
 
+@Entity
+@Table(name = "students")
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode
 public class Student {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
+
+    @Column(name = "full_name")
     private String fullName;
+
+    @Column(name = "age")
+    private Integer age;
+
+    @Column(name = "email")
     private String email;
+
+    @Column(name = "grades_list")
     private Integer[] gradesList;
 
     public static void isStudentCorrect(Student student) throws IncorrectBodyException {
-        if (student.getFullName() == null || student.email == null || student.gradesList == null) {
+        if (student.getFullName() == null || student.email == null || student.gradesList == null
+            || student.getAge() == null) {
             throw new IncorrectBodyException("Incorrect received body");
         }
 
@@ -33,48 +48,10 @@ public class Student {
         if (student.getEmail() != null && !student.getEmail().matches("^\\S+@\\S+\\.\\S+$")) {
             throw new IncorrectBodyException("Incorrect received body");
         }
-    }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == this) {
-            return true;
+        // предположим, курсы доступны только совершеннолетним
+        if (student.getAge() != null && student.getAge() < 18) {
+            throw new IncorrectBodyException("Incorrect received body");
         }
-
-        if (obj == null || obj.getClass() != this.getClass()) {
-            return false;
-        }
-
-        Student student = (Student) obj;
-        boolean ok = true;
-
-        if (student.email == null && this.email == null) {
-        }
-        else if (student.email == null || this.email == null) {
-            ok = false;
-        }
-        else {
-            ok = student.email.equals(this.email);
-        }
-
-        if (student.fullName == null && this.fullName == null) {
-        }
-        else if (student.fullName == null || this.fullName == null) {
-            ok = false;
-        }
-        else {
-            ok = student.fullName.equals(this.fullName);
-        }
-
-        if (student.gradesList == null && this.gradesList == null) {
-        }
-        else if (student.gradesList == null || this.gradesList == null) {
-            ok = false;
-        }
-        else {
-            ok = Arrays.equals(student.gradesList, this.gradesList);
-        }
-
-        return ok;
     }
 }

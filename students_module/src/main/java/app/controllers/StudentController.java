@@ -36,6 +36,31 @@ public class StudentController {
         return newStudent;
     }
 
+    @GetMapping
+    public List<Student> getAllStudents(@RequestParam("grade_id") Integer id) throws NoDataException {
+        return service.getAllStudents(id);
+    }
+
+    @GetMapping("/age")
+    public List<Student> getStudentsByAge(@RequestParam("age") Integer age, @RequestParam("relation") String relation) {
+        return service.getAllByAge(age, relation);
+    }
+
+    @GetMapping("/count")
+    public Integer getStudentsCount() {
+        return service.getStudentsCount();
+    }
+
+    @GetMapping("/name/sorted")
+    public List<Student> getStudentsSortedByFullName() {
+        return service.getStudentsSortedByFullName();
+    }
+
+    @GetMapping("/email/longest")
+    public Student getStudentWithLongestEmail() throws NoDataException {
+        return service.getStudentWithLongestEmail();
+    }
+
     @PutMapping("/{id}")
     public Student updateStudent(@PathVariable("id") Integer id, @RequestBody Student student)
             throws IncorrectBodyException, NoDataException, NoAuthorizationException {
@@ -68,10 +93,5 @@ public class StudentController {
     @DeleteMapping("/logout")
     public void logout(HttpSession session) {
         session.invalidate();
-    }
-
-    @GetMapping
-    public List<Student> getAllStudents(@RequestParam("grade_id") Integer id) throws NoDataException {
-        return service.getAllStudents(id);
     }
 }

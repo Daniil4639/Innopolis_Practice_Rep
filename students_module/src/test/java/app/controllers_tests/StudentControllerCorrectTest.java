@@ -18,7 +18,7 @@ public class StudentControllerCorrectTest extends StudentControllerAbstractTest 
     @DisplayName("Students: create request test")
     public void createTest() throws Exception {
         Student student = new Student(
-                1, "test_user", "test_email", new Integer[] {1}
+                1, "test_user", 19, "test_email", new Integer[] {1}
         );
 
         Mockito.when(service.create(student)).thenReturn(student);
@@ -36,7 +36,7 @@ public class StudentControllerCorrectTest extends StudentControllerAbstractTest 
     @DisplayName("Students: get request test")
     public void getTest() throws Exception {
         Student student = new Student(
-                1, "test_user", "test_email", new Integer[] {1}
+                1, "test_user", 19, "test_email", new Integer[] {1}
         );
 
         Mockito.when(service.read(1)).thenReturn(student);
@@ -51,11 +51,11 @@ public class StudentControllerCorrectTest extends StudentControllerAbstractTest 
     @DisplayName("Students: update request test")
     public void updateTest() throws Exception {
         Student student = new Student(
-                1, "test_user", "new_test_email", new Integer[] {1}
+                1, "test_user", 19, "new_test_email", new Integer[] {1}
         );
 
         Student requestStudent = new Student(
-                null, null, "new_test_email", null
+                null, null, null, "new_test_email", null
         );
 
         Mockito.when(sessionData.getSessionId()).thenReturn(1);
@@ -74,7 +74,7 @@ public class StudentControllerCorrectTest extends StudentControllerAbstractTest 
     @DisplayName("Students: add grade request test")
     public void addGradeTest() throws Exception {
         Student student = new Student(
-                1, "test_user", "new_test_email", new Integer[] {1, 2}
+                1, "test_user", 19, "new_test_email", new Integer[] {1, 2}
         );
 
         Mockito.when(sessionData.getSessionId()).thenReturn(1);
@@ -100,7 +100,7 @@ public class StudentControllerCorrectTest extends StudentControllerAbstractTest 
     @DisplayName("Students: get all by grade test")
     public void getAllByGradeTest() throws Exception {
         Student student = new Student(
-                1, "test_user", "new_test_email", new Integer[] {1, 2}
+                1, "test_user", 19, "new_test_email", new Integer[] {1, 2}
         );
         List<Student> students = new ArrayList<>(List.of(student));
 

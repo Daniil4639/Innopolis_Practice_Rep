@@ -18,7 +18,7 @@ public class StudentServiceIncorrectTest extends StudentServiceAbstractTest {
     @DisplayName("Students: service gets null | create")
     public void createNullTest() throws NoDataException {
         Student student = new Student(
-                1, null, "test_email@test.ru", new Integer[] {1}
+                1, null, 19, "test_email@test.ru", new Integer[] {1}
         );
 
         try {
@@ -31,7 +31,7 @@ public class StudentServiceIncorrectTest extends StudentServiceAbstractTest {
     @DisplayName("Students: service invalidation | create")
     public void createInvalidationTest() throws NoDataException {
         Student student = new Student(
-                1, "TestName TestSecondName", "test_email@test.ru", new Integer[] {1}
+                1, "TestName TestSecondName", 19, "test_email@test.ru", new Integer[] {1}
         );
 
         try {
@@ -44,7 +44,7 @@ public class StudentServiceIncorrectTest extends StudentServiceAbstractTest {
     @DisplayName("Students: service gets incorrect grades | create")
     public void createIncorrectGradesTest() throws IncorrectBodyException, NoDataException {
         Student student = new Student(
-                1, "TestName TestSecondName TestThirdName", "test_email@test.ru", new Integer[] {1}
+                1, "TestName TestSecondName TestThirdName", 19, "test_email@test.ru", new Integer[] {1}
         );
 
         Mockito.when(gradeClient.readGrade(1)).thenThrow(NoDataException.class);
@@ -58,7 +58,7 @@ public class StudentServiceIncorrectTest extends StudentServiceAbstractTest {
     @Test
     @DisplayName("Students: service throw ex | read")
     public void readExceptionTest() throws NoDataException {
-        Mockito.when(studentRepository.readStudent(1)).thenThrow(NoDataException.class);
+        Mockito.when(studentJdbcRepository.readStudent(1)).thenThrow(NoDataException.class);
 
         try {
             service.read(1);
@@ -70,7 +70,7 @@ public class StudentServiceIncorrectTest extends StudentServiceAbstractTest {
     @DisplayName("Students: service invalidation | update")
     public void updateInvalidationTest() throws NoDataException {
         Student student = new Student(
-                1, "TestName TestSecondName", "test_email@test.ru", new Integer[] {1}
+                1, "TestName TestSecondName", 19, "test_email@test.ru", new Integer[] {1}
         );
 
         try {
@@ -83,7 +83,7 @@ public class StudentServiceIncorrectTest extends StudentServiceAbstractTest {
     @DisplayName("Students: service gets incorrect grades | update")
     public void updateIncorrectGradesTest() throws IncorrectBodyException, NoDataException {
         Student student = new Student(
-                1, null, null, new Integer[] {1}
+                1, null, null, null, new Integer[] {1}
         );
 
         Mockito.when(gradeClient.readGrade(1)).thenThrow(NoDataException.class);
@@ -97,7 +97,7 @@ public class StudentServiceIncorrectTest extends StudentServiceAbstractTest {
     @Test
     @DisplayName("Students: service no data | delete")
     public void deleteNoDataTest() throws NoDataException {
-        Mockito.when(studentRepository.readStudent(1)).thenThrow(NoDataException.class);
+        Mockito.when(studentJdbcRepository.readStudent(1)).thenThrow(NoDataException.class);
 
         try {
             service.delete(1);

@@ -31,7 +31,7 @@ public class StudentConfig {
     private String dataSchema;
 
     @Bean
-    public JdbcTemplate getJdbcTemplate() {
+    public DriverManagerDataSource getDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(dataDriver);
         dataSource.setSchema(dataSchema);
@@ -39,6 +39,11 @@ public class StudentConfig {
         dataSource.setUsername(dataUser);
         dataSource.setPassword(dataPassword);
 
+        return dataSource;
+    }
+
+    @Bean
+    public JdbcTemplate getJdbcTemplate(DriverManagerDataSource dataSource) {
         return new JdbcTemplate(dataSource);
     }
 
