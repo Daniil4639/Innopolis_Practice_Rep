@@ -4,9 +4,11 @@ import app.exceptions.IncorrectBodyException;
 import app.exceptions.NoDataException;
 import app.models.Student;
 import app.services_tests.abstracts.StudentServiceAbstractTest;
+import app.specifications.StudentSpecification;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -189,5 +191,41 @@ public class StudentServiceCorrectTest extends StudentServiceAbstractTest {
         Mockito.when(studentJpaRepository.count()).thenReturn(2L);
 
         assert service.getStudentWithLongestEmail().getEmail().equals("new_test_email_longest");
+    }
+
+    @Test
+    @DisplayName("Students: service grades count test")
+    public void gradesCountTest() {
+        List<Student> students = new ArrayList<>(List.of(
+                new Student(
+                        1, "test_user_2", 19, "new_test_email", new Integer[]{1, 2}
+                ),
+                new Student(
+                        2, "test_user_1", 19, "new_test_email", new Integer[]{1, 2}
+                )
+        ));
+
+        Mockito.when(studentJpaRepository.findWithMoreGradesThan(1)).thenReturn(students);
+
+        assert service.getStudentsWithGradesCountMoreThan(1).equals(students);
+    }
+
+    @Test
+    @DisplayName("Students: service filter test")
+    public void filterTest() {
+        List<Student> students = new ArrayList<>(List.of(
+                new Student(
+                        1, "test_user_2", 19, "new_test_email_longest", new Integer[] {1, 2}
+                ),
+                new Student(
+                        2, "test_user_1", 19, "new_test_email", new Integer[] {1, 2}
+                )
+        ));
+
+        Specification<Student> spec = StudentSpecification.hasAge(19);
+
+        Mockito.when(studentJpaRepository.findAll(spec)).thenReturn(students);
+
+        assert studentJpaRepository.findAll(spec).equals(students);
     }
 }

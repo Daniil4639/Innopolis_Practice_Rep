@@ -10,6 +10,7 @@ import app.repositories.StudentJpaRepository;
 import app.services.interfaces.BasedCRUDService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.JpaSort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -112,6 +113,14 @@ public class StudentService implements BasedCRUDService<Student> {
         }
 
         return studentJpaRepository.findTop1ByEmail().get(0);
+    }
+
+    public List<Student> getStudentsWithGradesCountMoreThan(Integer count) {
+        return studentJpaRepository.findWithMoreGradesThan(count);
+    }
+
+    public List<Student> getStudentsByFilter(Specification<Student> spec) {
+        return studentJpaRepository.findAll(spec);
     }
 
     private void checkGradeId(Integer id) throws NoDataException {

@@ -6,8 +6,10 @@ import app.exceptions.NoAuthorizationException;
 import app.exceptions.NoDataException;
 import app.models.Student;
 import app.services.StudentService;
+import app.specifications.StudentSpecification;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -59,6 +61,23 @@ public class StudentController {
     @GetMapping("/email/longest")
     public Student getStudentWithLongestEmail() throws NoDataException {
         return service.getStudentWithLongestEmail();
+    }
+
+    @GetMapping("/grades/more")
+    public List<Student> getStudentsWithGradesCountMoreThan(@RequestParam("count") Integer count) {
+        return service.getStudentsWithGradesCountMoreThan(count);
+    }
+
+    @GetMapping("/search")
+    public List<Student> getStudentsByFilter(
+            @RequestParam(required = false) String fullName,
+            @RequestParam(required = false) Integer age,
+            @RequestParam(required = false) String email
+    ) {
+        Specification<Student> spec = StudentSpecification.createSpec(
+                fullName, age, email);
+
+        return service.getStudentsByFilter(spec);
     }
 
     @PutMapping("/{id}")
