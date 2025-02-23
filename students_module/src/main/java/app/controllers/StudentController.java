@@ -4,6 +4,7 @@ import app.configs.SessionData;
 import app.exceptions.IncorrectBodyException;
 import app.exceptions.NoAuthorizationException;
 import app.exceptions.NoDataException;
+import app.models.Comment;
 import app.models.Student;
 import app.services.StudentService;
 import app.specifications.StudentSpecification;
@@ -28,6 +29,32 @@ public class StudentController {
         sessionData.setSessionId(newStudent.getId());
 
         return newStudent;
+    }
+
+    @PostMapping("/comments")
+    public Comment postComment(@RequestParam("student") Integer studentId,
+                               @RequestParam("grade") Integer gradeId,
+                               @RequestBody String text) throws NoDataException, NoAuthorizationException {
+
+        if (sessionData.getSessionId() == null || !sessionData.getSessionId().equals(studentId)) {
+            throw new NoAuthorizationException("No authorization!");
+        }
+
+        return service.addComment(studentId, gradeId, text);
+    }
+
+    @GetMapping("/comments/student")
+    public List<Comment> getCommentsByStudent(@RequestParam("id") Integer id) throws NoAuthorizationException {
+        if (sessionData.getSessionId() == null || !sessionData.getSessionId().equals(id)) {
+            throw new NoAuthorizationException("No authorization!");
+        }
+
+        return service.getCommentsByStudent(id);
+    }
+
+    @GetMapping("/comments/grade")
+    public List<Comment> getCommentsByGrade(@RequestParam("id") Integer id) throws NoDataException {
+        return service.getCommentsByGrade(id);
     }
 
     @GetMapping("/{id}")

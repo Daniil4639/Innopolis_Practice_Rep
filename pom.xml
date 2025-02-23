@@ -10,6 +10,7 @@
     <modules>
         <module>grades_module</module>
         <module>students_module</module>
+        <module>comments_module</module>
     </modules>
     <version>1.0</version>
 
