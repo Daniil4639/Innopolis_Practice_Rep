@@ -1,9 +1,12 @@
 package app.services;
 
 import app.aspects.LogExecTime;
+import app.clients.CommentClient;
 import app.clients.GradeClient;
+import app.exceptions.GradeIsNotActiveException;
 import app.exceptions.IncorrectBodyException;
 import app.exceptions.NoDataException;
+import app.models.Comment;
 import app.models.Student;
 import app.repositories.StudentJdbcRepository;
 import app.repositories.StudentJpaRepository;
@@ -22,6 +25,7 @@ public class StudentService implements BasedCRUDService<Student> {
     private final StudentJdbcRepository studentJdbcRepository;
     private final StudentJpaRepository studentJpaRepository;
     private final GradeClient gradeClient;
+    private final CommentClient commentClient;
 
     @Override
     @LogExecTime
@@ -123,7 +127,25 @@ public class StudentService implements BasedCRUDService<Student> {
         return studentJpaRepository.findAll(spec);
     }
 
+    public Comment addComment(Integer student, Integer grade, String text) throws NoDataException {
+        checkGradeId(grade);
+
+        return commentClient.addComment(student, grade, text);
+    }
+
+    public List<Comment> getCommentsByStudent(Integer id) {
+        return commentClient.getCommentsByStudent(id);
+    }
+
+    public List<Comment> getCommentsByGrade(Integer id) throws NoDataException {
+        checkGradeId(id);
+
+        return commentClient.getCommentsByGrade(id);
+    }
+
     private void checkGradeId(Integer id) throws NoDataException {
-        gradeClient.readGrade(id);
+        if (!gradeClient.readGrade(id).getIsActive()) {
+            throw new GradeIsNotActiveException("Grade with id = " + id + " is not active!");
+        }
     }
 }

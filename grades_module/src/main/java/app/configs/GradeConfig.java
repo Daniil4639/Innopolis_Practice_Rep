@@ -21,7 +21,7 @@ public class GradeConfig {
     @Value("${spring.datasource.password}")
     private String dataPassword;
 
-    @Value("${spring.datasource.schema}")
+    @Value("${spring.datasource.hikari.schema}")
     private String dataSchema;
 
     @Bean
