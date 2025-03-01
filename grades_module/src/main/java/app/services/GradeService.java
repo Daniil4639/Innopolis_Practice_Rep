@@ -6,11 +6,17 @@ import app.repositories.GradeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class GradeService {
 
     private final GradeRepository repository;
+
+    public List<Grade> readAllGrades() {
+        return repository.readAllGrades();
+    }
 
     public Grade makeGradeActive(Integer id) throws NoDataException {
         repository.readGrade(id);
