@@ -13,10 +13,10 @@ public class BusMapper implements RowMapper<Bus> {
         return new Bus(
                 rs.getInt("id"),
                 rs.getString("number"),
-                rs.getInt("driverId"),
-                rs.getInt("pathId"),
-                rs.getInt("departmentId"),
-                rs.getInt("seatsNumber"),
+                rs.getInt("driver_id"),
+                rs.getInt("path_id"),
+                rs.getInt("department_id"),
+                rs.getInt("seats_number"),
                 rs.getString("type")
         );
     }
