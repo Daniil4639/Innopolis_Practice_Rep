@@ -2,11 +2,14 @@ package app.services_tests;
 
 import app.exceptions.IncorrectBodyException;
 import app.exceptions.NoDataException;
+import app.models.Grade;
 import app.models.Student;
 import app.services_tests.abstracts.StudentServiceAbstractTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+
+import java.time.LocalDate;
 
 public class StudentServiceIncorrectTest extends StudentServiceAbstractTest {
 
@@ -72,6 +75,8 @@ public class StudentServiceIncorrectTest extends StudentServiceAbstractTest {
         Student student = new Student(
                 1, "TestName TestSecondName", 19, "test_email@test.ru", new Integer[] {1}
         );
+        Grade grade = new Grade(1, "test_grade", LocalDate.now(), true);
+        Mockito.when(gradeClient.readGrade(1)).thenReturn(grade);
 
         try {
             service.update(1, student);
