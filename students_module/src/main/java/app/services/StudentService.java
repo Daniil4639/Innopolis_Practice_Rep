@@ -78,7 +78,6 @@ public class StudentService implements BasedCRUDService<Student> {
 
     @LogExecTime
     public List<Student> getAllStudents(Integer id) throws NoDataException {
-        checkGradeId(id);
         return studentJdbcRepository.getAllStudentsByGrade(id);
     }
 
@@ -128,8 +127,6 @@ public class StudentService implements BasedCRUDService<Student> {
     }
 
     public Comment addComment(Integer student, Integer grade, String text) throws NoDataException {
-        checkGradeId(grade);
-
         return commentClient.addComment(student, grade, text);
     }
 
@@ -138,8 +135,6 @@ public class StudentService implements BasedCRUDService<Student> {
     }
 
     public List<Comment> getCommentsByGrade(Integer id) throws NoDataException {
-        checkGradeId(id);
-
         return commentClient.getCommentsByGrade(id);
     }
 
