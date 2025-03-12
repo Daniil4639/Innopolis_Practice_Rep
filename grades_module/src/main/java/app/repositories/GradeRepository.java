@@ -3,17 +3,24 @@ package app.repositories;
 import app.exceptions.NoDataException;
 import app.mappers.GradeMapper;
 import app.models.Grade;
+import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
+@RequiredArgsConstructor
 public class GradeRepository {
 
     private final JdbcTemplate template;
 
-    public GradeRepository(JdbcTemplate template) {
-        this.template = template;
+    public List<Grade> readAllGrades() {
+        return template.query(
+                "select * from grades",
+                new GradeMapper()
+        );
     }
 
     public Grade makeGradeActive(Integer id) {

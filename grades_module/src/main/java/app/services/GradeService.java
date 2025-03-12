@@ -3,15 +3,19 @@ package app.services;
 import app.exceptions.NoDataException;
 import app.models.Grade;
 import app.repositories.GradeRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
+@RequiredArgsConstructor
 public class GradeService {
 
     private final GradeRepository repository;
 
-    public GradeService(GradeRepository repository) {
-        this.repository = repository;
+    public List<Grade> readAllGrades() {
+        return repository.readAllGrades();
     }
 
     public Grade makeGradeActive(Integer id) throws NoDataException {

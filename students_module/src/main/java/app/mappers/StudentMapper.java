@@ -13,6 +13,7 @@ public class StudentMapper implements RowMapper<Student> {
         return new Student(
                 rs.getInt("id"),
                 rs.getString("full_name"),
+                rs.getInt("age"),
                 rs.getString("email"),
                 (Integer[]) rs.getArray("grades_list").getArray()
         );

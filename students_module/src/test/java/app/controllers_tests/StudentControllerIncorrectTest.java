@@ -15,7 +15,7 @@ public class StudentControllerIncorrectTest extends StudentControllerAbstractTes
     @DisplayName("Students: update request UnAuthorized test")
     public void updateIncorrectTest() throws Exception {
         Student requestStudent = new Student(
-                null, null, "new_test_email", null
+                null, null, null, "new_test_email", null
         );
 
         Mockito.when(sessionData.getSessionId()).thenReturn(null);

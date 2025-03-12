@@ -3,16 +3,23 @@ package app.controllers;
 import app.dto.GradeDto;
 import app.exceptions.NoDataException;
 import app.services.GradeService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/grades")
+@RequiredArgsConstructor
 public class GradeController {
 
     private final GradeService service;
 
-    public GradeController(GradeService service) {
-        this.service = service;
+    @GetMapping
+    public List<GradeDto> readAllGrades() {
+        return service.readAllGrades().stream()
+                .map(GradeDto::new)
+                .toList();
     }
 
     @GetMapping("/{id}")

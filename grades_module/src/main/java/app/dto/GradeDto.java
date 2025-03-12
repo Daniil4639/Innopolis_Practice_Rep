@@ -10,9 +10,9 @@ public class GradeDto {
     public Boolean isActive;
 
     public GradeDto(Grade grade) {
-        this.id = grade.id();
-        this.name = grade.name();
-        this.startDate = grade.startDate().toString();
-        this.isActive = grade.isActive();
+        this.id = grade.getId();
+        this.name = grade.getName();
+        this.startDate = grade.getStartDate().toString();
+        this.isActive = grade.getIsActive();
     }
 }
