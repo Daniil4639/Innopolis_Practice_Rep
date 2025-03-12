@@ -6,12 +6,21 @@ import app.services.GradeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/grades")
 @RequiredArgsConstructor
 public class GradeController {
 
     private final GradeService service;
+
+    @GetMapping
+    public List<GradeDto> readAllGrades() {
+        return service.readAllGrades().stream()
+                .map(GradeDto::new)
+                .toList();
+    }
 
     @GetMapping("/{id}")
     public GradeDto readGrade(@PathVariable("id") Integer id) throws NoDataException {

@@ -4,10 +4,13 @@ import app.configs.SessionData;
 import app.exceptions.IncorrectBodyException;
 import app.exceptions.NoAuthorizationException;
 import app.exceptions.NoDataException;
+import app.models.Comment;
 import app.models.Student;
 import app.services.StudentService;
+import app.specifications.StudentSpecification;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,6 +29,32 @@ public class StudentController {
         sessionData.setSessionId(newStudent.getId());
 
         return newStudent;
+    }
+
+    @PostMapping("/comments")
+    public Comment postComment(@RequestParam("student") Integer studentId,
+                               @RequestParam("grade") Integer gradeId,
+                               @RequestBody String text) throws NoDataException, NoAuthorizationException {
+
+        if (sessionData.getSessionId() == null || !sessionData.getSessionId().equals(studentId)) {
+            throw new NoAuthorizationException("No authorization!");
+        }
+
+        return service.addComment(studentId, gradeId, text);
+    }
+
+    @GetMapping("/comments/student")
+    public List<Comment> getCommentsByStudent(@RequestParam("id") Integer id) throws NoAuthorizationException {
+        if (sessionData.getSessionId() == null || !sessionData.getSessionId().equals(id)) {
+            throw new NoAuthorizationException("No authorization!");
+        }
+
+        return service.getCommentsByStudent(id);
+    }
+
+    @GetMapping("/comments/grade")
+    public List<Comment> getCommentsByGrade(@RequestParam("id") Integer id) throws NoDataException {
+        return service.getCommentsByGrade(id);
     }
 
     @GetMapping("/{id}")
@@ -59,6 +88,23 @@ public class StudentController {
     @GetMapping("/email/longest")
     public Student getStudentWithLongestEmail() throws NoDataException {
         return service.getStudentWithLongestEmail();
+    }
+
+    @GetMapping("/grades/more")
+    public List<Student> getStudentsWithGradesCountMoreThan(@RequestParam("count") Integer count) {
+        return service.getStudentsWithGradesCountMoreThan(count);
+    }
+
+    @GetMapping("/search")
+    public List<Student> getStudentsByFilter(
+            @RequestParam(required = false) String fullName,
+            @RequestParam(required = false) Integer age,
+            @RequestParam(required = false) String email
+    ) {
+        Specification<Student> spec = StudentSpecification.createSpec(
+                fullName, age, email);
+
+        return service.getStudentsByFilter(spec);
     }
 
     @PutMapping("/{id}")

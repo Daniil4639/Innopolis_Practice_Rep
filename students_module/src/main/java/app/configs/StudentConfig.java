@@ -1,5 +1,6 @@
 package app.configs;
 
+import app.clients.CommentClient;
 import app.clients.GradeClient;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +16,9 @@ public class StudentConfig {
     @Value("${grade.client.url}")
     private String gradeClientUrl;
 
+    @Value("${comment.client.url}")
+    private String commentClientUrl;
+
     @Value("${spring.datasource.driver}")
     private String dataDriver;
 
@@ -27,7 +31,7 @@ public class StudentConfig {
     @Value("${spring.datasource.password}")
     private String dataPassword;
 
-    @Value("${spring.datasource.schema}")
+    @Value("${spring.datasource.hikari.schema}")
     private String dataSchema;
 
     @Bean
@@ -50,5 +54,10 @@ public class StudentConfig {
     @Bean
     public GradeClient getGradeClient() {
         return new GradeClient(gradeClientUrl);
+    }
+
+    @Bean
+    public CommentClient getCommentClient() {
+        return new CommentClient(commentClientUrl);
     }
 }

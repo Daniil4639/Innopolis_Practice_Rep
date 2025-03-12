@@ -1,5 +1,6 @@
 package app.controllers;
 
+import app.exceptions.GradeIsNotActiveException;
 import app.exceptions.IncorrectBodyException;
 import app.exceptions.NoAuthorizationException;
 import app.exceptions.NoDataException;
@@ -26,6 +27,12 @@ public class StudentControllerAdvice {
     @ExceptionHandler({NoAuthorizationException.class})
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public String handleNoAuthorization(NoAuthorizationException ex) {
+        return ex.getMessage();
+    }
+
+    @ExceptionHandler({GradeIsNotActiveException.class})
+    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+    public String handleGradeIsNotActive(GradeIsNotActiveException ex) {
         return ex.getMessage();
     }
 }
