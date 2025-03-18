@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.JpaSort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -32,6 +33,8 @@ public class StudentService implements BasedCRUDService<Student> {
     private final GradeClient gradeClient;
     private final CommentClient commentClient;
 
+    private final PasswordEncoder encoder;
+
     public Student getStudentByEmail(String email) throws NoDataException {
         return studentJpaRepository.findByEmail(email)
                 .orElseThrow(() ->
@@ -44,6 +47,16 @@ public class StudentService implements BasedCRUDService<Student> {
         Student.isStudentCorrect(obj);
         for (Integer gradeId: obj.getGradesList()) {
             checkGradeId(gradeId);
+        }
+
+        obj.setPassword(encoder.encode(obj.getPassword()));
+
+        boolean isLoginAlreadyExists = studentJpaRepository.findAll().stream()
+                .map(Student::getEmail)
+                .anyMatch(email -> email.equals(obj.getEmail()));
+
+        if (isLoginAlreadyExists) {
+            throw new IncorrectBodyException("Such email are already used!");
         }
 
         return studentJdbcRepository.createStudent(obj);

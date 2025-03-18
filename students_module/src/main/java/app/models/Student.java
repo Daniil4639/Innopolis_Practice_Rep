@@ -1,6 +1,7 @@
 package app.models;
 
 import app.exceptions.IncorrectBodyException;
+import app.models.dto.StudentRegistrationDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -38,6 +39,16 @@ public class Student {
 
     @Column(name = "grades_list")
     private Integer[] gradesList;
+
+    public Student(StudentRegistrationDTO registrationDTO) {
+        this.id = null;
+        this.fullName = registrationDTO.getFullName();
+        this.age = registrationDTO.getAge();
+        this.email = registrationDTO.getEmail();
+        this.password = registrationDTO.getPassword();
+        this.roles = new String[] {"USER"};
+        this.gradesList = new Integer[] {};
+    }
 
     public static void isStudentCorrect(Student student) throws IncorrectBodyException {
         if (student.getFullName() == null || student.email == null || student.gradesList == null

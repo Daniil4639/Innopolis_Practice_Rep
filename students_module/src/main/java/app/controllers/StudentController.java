@@ -6,6 +6,7 @@ import app.models.Comment;
 import app.models.Student;
 import app.models.dto.StudentForOtherUserDTO;
 import app.models.dto.StudentForUserDTO;
+import app.models.dto.StudentRegistrationDTO;
 import app.services.StudentService;
 import app.specifications.StudentSpecification;
 import jakarta.servlet.http.HttpSession;
@@ -15,6 +16,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -26,13 +28,13 @@ public class StudentController {
 
     private final StudentService service;
 
-    /*
     @PostMapping
-    public Student createStudent(@RequestBody Student student) throws IncorrectBodyException, NoDataException {
+    public StudentForUserDTO createStudent(@RequestBody StudentRegistrationDTO student)
+            throws IncorrectBodyException {
 
-        return service.create(student);
+        return new StudentForUserDTO(service.create(new Student(student)),
+                new ArrayList<>());
     }
-    */
 
     @PostMapping("/comments")
     @PreAuthorize("hasAuthority('USER')")

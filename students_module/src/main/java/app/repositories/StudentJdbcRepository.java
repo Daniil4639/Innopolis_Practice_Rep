@@ -19,7 +19,7 @@ public class StudentJdbcRepository {
 
     public Student createStudent(Student student) {
         return template.queryForObject(
-                String.format("insert into students values(default, '%s', %d, '%s', '%s', ARRAY%s, ARRAY%s) returning *",
+                String.format("insert into students values(default, '%s', %d, '%s', '%s', ARRAY%s, ARRAY%s::integer[]) returning *",
                         student.getFullName(),
                         student.getAge(),
                         student.getEmail(),

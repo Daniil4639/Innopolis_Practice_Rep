@@ -4,6 +4,7 @@ import app.controllers_tests.abstracts.StudentControllerAbstractTest;
 import app.models.Grade;
 import app.models.Student;
 import app.models.dto.StudentForUserDTO;
+import app.models.dto.StudentRegistrationDTO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -17,12 +18,15 @@ import java.util.List;
 
 public class StudentControllerCorrectTest extends StudentControllerAbstractTest {
 
-    /*
     @Test
     @DisplayName("Students: create request test")
     public void createTest() throws Exception {
         Student student = new Student(
-                1, "test_user", 19, "test_email", "test_password", new String[] {"USER"},new Integer[] {1}
+                null, "student full name", 19, "someemail@yandex.ru", "test_password", new String[] {"USER"},new Integer[] {}
+        );
+
+        StudentRegistrationDTO studentRegistrationDTO = new StudentRegistrationDTO(
+                "student full name", 19, "someemail@yandex.ru", "test_password"
         );
 
         Mockito.when(service.create(student)).thenReturn(student);
@@ -32,10 +36,9 @@ public class StudentControllerCorrectTest extends StudentControllerAbstractTest 
                 .content(asJsonString(student))
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.email").value("test_email"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.fullName").value("test_user"));;
+                .andExpect(MockMvcResultMatchers.jsonPath("$.email").value("someemail@yandex.ru"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.fullName").value("student full name"));;
     }
-    */
 
     @Test
     @DisplayName("Students: get request test")
