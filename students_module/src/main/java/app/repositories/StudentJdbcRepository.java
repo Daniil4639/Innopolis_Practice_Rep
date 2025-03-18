@@ -19,10 +19,12 @@ public class StudentJdbcRepository {
 
     public Student createStudent(Student student) {
         return template.queryForObject(
-                String.format("insert into students values(default, '%s', %d, '%s', ARRAY%s) returning *",
+                String.format("insert into students values(default, '%s', %d, '%s', '%s', ARRAY%s, ARRAY%s) returning *",
                         student.getFullName(),
                         student.getAge(),
                         student.getEmail(),
+                        student.getPassword(),
+                        Arrays.toString(student.getRoles()),
                         Arrays.toString(student.getGradesList())),
                 new StudentMapper()
         );
@@ -42,10 +44,12 @@ public class StudentJdbcRepository {
 
     public Student updateStudent(Integer id, Student student) {
         return template.queryForObject(
-                String.format("update students set full_name = %s, age = %s, email = %s, grades_list = %s where id = %d returning *",
+                String.format("update students set full_name = %s, age = %s, email = %s, password = %s, roles = %s, grades_list = %s where id = %d returning *",
                         (student.getFullName() != null) ? ("'" + student.getFullName() + "'") : ("full_name"),
                         (student.getAge() != null) ? (student.getAge()) : ("age"),
                         (student.getEmail() != null) ? ("'" + student.getEmail() + "'") : ("email"),
+                        (student.getPassword() != null) ? ("'" + student.getPassword() + "'") : ("password"),
+                        (student.getRoles() != null) ? ("ARRAY" + Arrays.toString(student.getRoles())) : ("roles"),
                         (student.getGradesList() != null) ? ("ARRAY" + Arrays.toString(student.getGradesList())) : ("grades_list"),
                         id),
                 new StudentMapper()

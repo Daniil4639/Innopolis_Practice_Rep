@@ -5,11 +5,13 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Entity
 @Table(name = "students")
 @Getter
 @Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
@@ -27,6 +29,12 @@ public class Student {
 
     @Column(name = "email")
     private String email;
+
+    @Column(name = "password")
+    private String password;
+
+    @Column(name = "roles")
+    private String[] roles;
 
     @Column(name = "grades_list")
     private Integer[] gradesList;

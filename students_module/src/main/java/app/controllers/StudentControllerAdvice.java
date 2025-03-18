@@ -2,7 +2,6 @@ package app.controllers;
 
 import app.exceptions.GradeIsNotActiveException;
 import app.exceptions.IncorrectBodyException;
-import app.exceptions.NoAuthorizationException;
 import app.exceptions.NoDataException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -21,12 +20,6 @@ public class StudentControllerAdvice {
     @ExceptionHandler({NoDataException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public String handleNoData(NoDataException ex) {
-        return ex.getMessage();
-    }
-
-    @ExceptionHandler({NoAuthorizationException.class})
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public String handleNoAuthorization(NoAuthorizationException ex) {
         return ex.getMessage();
     }
 

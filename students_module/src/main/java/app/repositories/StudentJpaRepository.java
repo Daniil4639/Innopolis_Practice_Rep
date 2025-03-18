@@ -8,10 +8,13 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface StudentJpaRepository extends JpaRepository<Student, Integer>,
         JpaSpecificationExecutor<Student> {
+
+    Optional<Student> findByEmail(String email);
 
     @Query("select s from Student s where age > :age")
     List<Student> findStudentsWithMoreThanAge(@Param("age") Integer age);

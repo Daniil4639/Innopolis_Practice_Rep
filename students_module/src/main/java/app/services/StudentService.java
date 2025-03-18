@@ -7,15 +7,20 @@ import app.exceptions.GradeIsNotActiveException;
 import app.exceptions.IncorrectBodyException;
 import app.exceptions.NoDataException;
 import app.models.Comment;
+import app.models.Grade;
 import app.models.Student;
+import app.models.dto.StudentForUserDTO;
 import app.repositories.StudentJdbcRepository;
 import app.repositories.StudentJpaRepository;
+import app.security.StudentDetails;
 import app.services.interfaces.BasedCRUDService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.JpaSort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -26,6 +31,12 @@ public class StudentService implements BasedCRUDService<Student> {
     private final StudentJpaRepository studentJpaRepository;
     private final GradeClient gradeClient;
     private final CommentClient commentClient;
+
+    public Student getStudentByEmail(String email) throws NoDataException {
+        return studentJpaRepository.findByEmail(email)
+                .orElseThrow(() ->
+                        new NoDataException("Incorrect email: " + email));
+    }
 
     @Override
     @LogExecTime
@@ -142,5 +153,13 @@ public class StudentService implements BasedCRUDService<Student> {
         if (!gradeClient.readGrade(id).getIsActive()) {
             throw new GradeIsNotActiveException("Grade with id = " + id + " is not active!");
         }
+    }
+
+    public StudentForUserDTO transformToDTO(Student student) {
+        List<Grade> grades = new ArrayList<>();
+        for (Integer gradeId: student.getGradesList()) {
+            grades.add(gradeClient.readGrade(gradeId));
+        }
+        return new StudentForUserDTO(student, grades);
     }
 }
