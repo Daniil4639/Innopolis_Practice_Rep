@@ -10,4 +10,9 @@ public class PagesController {
     public String getProfilePage() {
         return "tasks";
     }
+
+    @GetMapping("/login")
+    public String getLoginPage() {
+        return "login";
+    }
 }

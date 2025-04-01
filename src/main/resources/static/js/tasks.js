@@ -1,7 +1,13 @@
 var role = 'Anonymous';
 
 window.addEventListener('load', () => {
-    fetch('/api/v1/users/info')
+    const token = localStorage.getItem('jwtToken');
+
+    fetch('/api/v1/users/info', {
+        headers: {
+            'Authorization': 'Bearer ' + token
+        }
+    })
             .then(response => {
                 if(!response.ok) {
                     throw new Error('Ошибка');
@@ -31,9 +37,12 @@ function getAccessToAddingTask() {
                 };
 
                 if (task_name && task_description) {
+                    const token = localStorage.getItem('jwtToken');
+
                     fetch('/api/v1/tasks', {
                         method: 'POST',
                         headers: {
+                                'Authorization': 'Bearer ' + token,
                                 'Accept': 'application/json',
                                 'Content-Type': 'application/json'
                         },
@@ -60,8 +69,13 @@ function getAccessToAddingTask() {
 
 function getUserInfo(username) {
     document.getElementById("name_folder").textContent='Name: ' + username;
+    const token = localStorage.getItem('jwtToken');
 
-    fetch('/api/v1/users/role')
+    fetch('/api/v1/users/role', {
+        headers: {
+            'Authorization': 'Bearer ' + token
+        }
+    })
                 .then(response => {
                     if(!response.ok) {
                         throw new Error('Ошибка');
@@ -82,7 +96,13 @@ function getUserInfo(username) {
 }
 
 function reload_tasks() {
-    fetch('api/v1/tasks')
+    const token = localStorage.getItem('jwtToken');
+
+    fetch('api/v1/tasks', {
+        headers: {
+                    'Authorization': 'Bearer ' + token
+                }
+    })
             .then(response => {
                 if(!response.ok) {
                     throw new Error('Ошибка');
@@ -94,6 +114,12 @@ function reload_tasks() {
             .catch(error => {
                 console.error('Ошибка: ', error);
             });
+}
+
+function logout() {
+    console.info('Logout');
+    localStorage.removeItem('jwtToken');
+    location.reload();
 }
 
 function fillTasksList(tasks) {
@@ -132,8 +158,13 @@ function fillTasksList(tasks) {
             task_actions_el.appendChild(task_delete_el);
 
             task_delete_el.addEventListener('click', (e) => {
+                const token = localStorage.getItem('jwtToken');
+
                 fetch('/api/v1/tasks/' + task.id, {
-                    method: 'DELETE'
+                    method: 'DELETE',
+                    headers: {
+                                'Authorization': 'Bearer ' + token
+                            }
                 })
                 .then(response => {
                     if (response.status == 200) {

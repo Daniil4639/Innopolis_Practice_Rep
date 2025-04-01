@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
     <meta charset="UTF-8">
     <title>Логин</title>
     <style>
@@ -62,7 +64,7 @@
 <body>
 <div class="login-container">
     <h1>Войти в систему</h1>
-    <form action="/perform_login" method="post">
+    <form>
         <div>
             <label for="username">Имя пользователя:</label>
             <input type="text" id="username" name="username" required>
@@ -72,13 +74,48 @@
             <input type="password" id="password" name="password" required>
         </div>
         <div>
-            <button type="submit">Войти</button>
+            <button type="button" onclick="login()">Войти</button>
         </div>
         <!-- Блок для отображения сообщения об ошибке -->
-        <div class="error-message">
+        <div class="error-message" id="message">
             <!-- Здесь можно вывести сообщение об ошибке, если передан параметр error -->
         </div>
     </form>
 </div>
+
+<script>
+    function login(){
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+        fetch("/api/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"  // Добавляем Accept-заголовок
+          },
+          body: JSON.stringify({username, password})
+        })
+        .then(response => {
+          if(response.ok) return response.text();
+          else throw new Error("Неверные учётные данные");
+        })
+        .then(data => {
+            localStorage.setItem("jwtToken", data);
+            goToTasks(data);
+        })
+        .catch(err => {
+          document.getElementById("message").innerText = err.message;
+          console.error("Что - то не так!");
+        });
+    }
+
+    function goToTasks(token) {
+        const date = new Date();
+        date.setTime(date.getTime() + 3000);
+
+        document.cookie = 'jwtToken=' + token + '; expires=' + date.toUTCString() + '; path=/';
+        window.location.href = '/tasks';
+    }
+</script>
 </body>
 </html>
