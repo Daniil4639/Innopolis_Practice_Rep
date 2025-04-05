@@ -9,7 +9,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -39,27 +39,26 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain configSecurityChain(HttpSecurity http,TasksBasicAuthEntryPoint entryPoint,
-                                                   LoggingFilter filter) throws Exception {
+                                                   CustomOidUserService oidUserService) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .addFilterBefore(filter, BasicAuthenticationFilter.class)
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/v1/users**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/tasks").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/v1/tasks").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/v1/tasks**").hasRole("ADMIN")
                         .anyRequest().authenticated()
-//                ).formLogin(form -> form
-//                        .loginPage("/custom-login.html")
-//                        .loginProcessingUrl("/perform_login")
-//                        .defaultSuccessUrl("/tasks",true)
-//                        .failureUrl("/custom-login.html?error=true")
-//                        .permitAll()
-//                ).logout(logout->logout
-//                        .logoutUrl("/perform_logout")
-//                        .logoutSuccessUrl("/custom-login?logout=true")
-//                        .permitAll()
-//                );
-                ).httpBasic(basic -> basic.authenticationEntryPoint(entryPoint));
+                ).logout(logout->logout
+                        .logoutUrl("/perform_logout")
+                        .logoutSuccessUrl("/tasks")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                        .addLogoutHandler(((request, response, authentication) ->
+                                new SecurityContextLogoutHandler().logout(request, response, authentication)))
+                ).oauth2Login(oauth2 -> oauth2
+                        .userInfoEndpoint(point ->
+                                point.oidcUserService(oidUserService))
+                        .defaultSuccessUrl("/tasks",true));
 
         return http.build();
     }

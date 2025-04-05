@@ -82,6 +82,9 @@ function getUserInfo(username) {
 }
 
 function reload_tasks() {
+    const tasks_list = document.getElementById("tasks");
+    tasks_list.innerHTML = '';
+
     fetch('api/v1/tasks')
             .then(response => {
                 if(!response.ok) {
@@ -98,7 +101,6 @@ function reload_tasks() {
 
 function fillTasksList(tasks) {
     const tasks_list = document.getElementById("tasks");
-    tasks_list.innerHTML = '';
 
     tasks.forEach(task => {
         const task_el = document.createElement('div');
