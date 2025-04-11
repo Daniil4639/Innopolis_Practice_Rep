@@ -11,6 +11,10 @@ import lombok.Setter;
 
 import java.util.List;
 
+/**
+ * Класс - сущность объектов таблицы users
+ * @author Danma
+ */
 @Entity
 @Table(name = "users")
 @Getter
@@ -19,13 +23,16 @@ import java.util.List;
 @AllArgsConstructor
 public class User {
 
+    /** Поле, содержащее имя пользователя */
     @Id
     @Column(name = "username")
     private String username;
 
+    /** Поле, содержащее пароль пользователя */
     @Column(name = "password")
     private String password;
 
+    /** Поле, содержащее уровни доступа пользователя */
     @Column(name = "roles")
     private List<String> roles;
 }

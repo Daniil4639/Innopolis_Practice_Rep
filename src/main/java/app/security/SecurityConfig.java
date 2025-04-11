@@ -16,15 +16,27 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
+/**
+ * Класс конфигурации цепочки безопасности доступа к защищенным ресурсам приложения
+ * @author Danma
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
+    /**
+     * Процедура создания бина кодировщика паролей пользователей
+     * @return кодировщик формата bcrypt
+     */
     @Bean
     public PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder(BCryptPasswordEncoder.BCryptVersion.$2A, 15);
     }
 
+    /**
+     * Процедура создания списка параметров CORS - защиты ресурсов web - приложения
+     * @return список CORS - параметров
+     */
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("*"));
@@ -37,8 +49,15 @@ public class SecurityConfig {
         return source;
     }
 
+    /**
+     * Процедура конфигурации цепочки безопасности
+     * @param http объект - builder цепочки безопасности
+     * @param oidUserService сервис доступа к авторизационным данным OAuth2
+     * @return цепочка фильтров безопасности
+     * @throws Exception любые ошибки, возникающие в процессе конфигурации
+     */
     @Bean
-    public SecurityFilterChain configSecurityChain(HttpSecurity http,TasksBasicAuthEntryPoint entryPoint,
+    public SecurityFilterChain configSecurityChain(HttpSecurity http,
                                                    CustomOidUserService oidUserService) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
