@@ -15,12 +15,22 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+/**
+ * Класс - сервис для получения информации о пользователе для OAuth2 авторизации
+ * @author Danma
+ */
 @Component
 @RequiredArgsConstructor
 public class CustomOidUserService extends OidcUserService {
 
+    /** Репозиторий, выполняющий запросы в базу данных */
     private final UserRepository repository;
 
+    /**
+     * Процедура получения информации о пользователе и его правах доступа
+     * @param request токен пользовательской сессии
+     * @return информация о текущем пользователе
+     */
     @Override
     public OidcUser loadUser(OidcUserRequest request) {
         OidcUser user = super.loadUser(request);
