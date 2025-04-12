@@ -54,8 +54,8 @@ CREATE TABLE IF NOT EXISTS paths (
     duration INT NOT NULL,
     is_deleted BOOLEAN NOT NULL,
 
-    FOREIGN KEY (begin_station) REFERENCES stations (id) ON DELETE RESTRICT,
-    FOREIGN KEY (end_station) REFERENCES stations (id) ON DELETE RESTRICT
+    FOREIGN KEY (begin_station) REFERENCES stations (id) ON DELETE RESTRICT ON UPDATE CASCADE,
+    FOREIGN KEY (end_station) REFERENCES stations (id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 COMMENT ON TABLE paths IS 'Таблица с данными о маршрутах следования автобусов';
@@ -76,8 +76,8 @@ CREATE TABLE IF NOT EXISTS buses (
     is_active BOOLEAN NOT NULL,
     is_deleted BOOLEAN NOT NULL,
 
-    FOREIGN KEY (path_number) REFERENCES paths (number) ON DELETE RESTRICT,
-    FOREIGN KEY (department_id) REFERENCES departments (id) ON DELETE RESTRICT
+    FOREIGN KEY (path_number) REFERENCES paths (number) ON DELETE RESTRICT ON UPDATE CASCADE,
+    FOREIGN KEY (department_id) REFERENCES departments (id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 COMMENT ON TABLE buses IS 'Таблица с данными об автобусах';
@@ -95,8 +95,8 @@ CREATE TABLE IF NOT EXISTS paths_stations (
     station_id INT NOT NULL,
     time_spent_from_start INT NOT NULL,
     PRIMARY KEY (path_number, station_id),
-    FOREIGN KEY (path_number) REFERENCES paths (number) ON DELETE RESTRICT,
-    FOREIGN KEY (station_id) REFERENCES stations (id) ON DELETE RESTRICT
+    FOREIGN KEY (path_number) REFERENCES paths (number) ON DELETE RESTRICT ON UPDATE CASCADE,
+    FOREIGN KEY (station_id) REFERENCES stations (id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 COMMENT ON TABLE paths_stations IS 'Таблица с данными о соответствии маршрута и остановки';
@@ -110,8 +110,8 @@ CREATE TABLE IF NOT EXISTS buses_drivers (
     bus_number VARCHAR(20) NOT NULL,
     driver_id INT NOT NULL,
     PRIMARY KEY (bus_number, driver_id),
-    FOREIGN KEY (bus_number) REFERENCES buses (number) ON DELETE RESTRICT,
-    FOREIGN KEY (driver_id) REFERENCES drivers (id) ON DELETE RESTRICT
+    FOREIGN KEY (bus_number) REFERENCES buses (number) ON DELETE RESTRICT ON UPDATE CASCADE,
+    FOREIGN KEY (driver_id) REFERENCES drivers (id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 COMMENT ON TABLE buses_drivers IS 'Таблица с данными о соответствии автобуса и водителей';

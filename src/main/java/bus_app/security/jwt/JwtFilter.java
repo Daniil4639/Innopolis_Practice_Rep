@@ -30,19 +30,26 @@ public class JwtFilter extends OncePerRequestFilter {
         String authHeader = "";
 
         Cookie[] cookies = request.getCookies();
-        boolean cookieFound = false;
+        boolean tokenFound = false;
 
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("jwtToken")) {
                     authHeader = cookie.getValue();
-                    cookieFound = true;
+                    tokenFound = true;
                     break;
                 }
             }
         }
 
-        if (!cookieFound) {
+        String headerWithToken = request.getHeader("Authorization");
+
+        if (!tokenFound && headerWithToken != null && headerWithToken.startsWith("Bearer ")) {
+            authHeader = headerWithToken.substring(7);
+            tokenFound = true;
+        }
+
+        if (!tokenFound) {
             filterChain.doFilter(request, response);
             return;
         }
