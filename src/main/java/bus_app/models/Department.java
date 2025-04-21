@@ -2,8 +2,6 @@ package bus_app.models;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @Table(name = "departments")
@@ -11,9 +9,8 @@ import org.hibernate.annotations.SQLRestriction;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
 @ToString
-@SQLDelete(sql = "update departments set is_deleted = true where id = ?")
-@SQLRestriction("is_deleted = false")
 public class Department {
 
     @Id

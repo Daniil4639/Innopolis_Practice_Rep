@@ -26,6 +26,11 @@ public class PathService {
     }
 
     public Path addPath(PathRequestDto path) {
+        pathRepository.returnToListById(path.getNumber());
+        if (pathRepository.findById(path.getNumber()).isPresent()) {
+            return updatePath(path);
+        }
+
         if (path.getStations().size() != path.getTimesFromStartToStations().size()) {
             throw new IncorrectBodyException("Stations array size is not equals a size of times array!");
         }
@@ -58,7 +63,7 @@ public class PathService {
         }
     }
 
-    public Path updatepath(PathRequestDto path) {
+    public Path updatePath(PathRequestDto path) {
         Path updatablePath;
 
         try {

@@ -5,6 +5,7 @@ import bus_app.dto.drivers.DriverDto;
 import bus_app.dto.paths.PathResponseDto;
 import bus_app.models.Bus;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,6 +13,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@EqualsAndHashCode
 @Schema(description = "Модель ответа с информацией об автобусе")
 public class BusResponseDto {
 

@@ -51,7 +51,7 @@ public class PathController {
     public PathResponseDto updatePath(
             @Parameter(description = "Информация о пути следования")
             @RequestBody PathRequestDto path) {
-        return new PathResponseDto(pathService.updatepath(path));
+        return new PathResponseDto(pathService.updatePath(path));
     }
 
     @Operation(

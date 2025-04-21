@@ -2,15 +2,13 @@ package bus_app.dto.drivers;
 
 import bus_app.models.Driver;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
 @Schema(description = "Модель с информацией о водителе")
 public class DriverDto {
 

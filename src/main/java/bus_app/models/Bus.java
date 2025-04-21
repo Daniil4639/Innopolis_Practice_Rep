@@ -2,8 +2,6 @@ package bus_app.models;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.SQLRestriction;
 
 import java.util.List;
 
@@ -13,9 +11,8 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
 @ToString
-@SQLDelete(sql = "update buses set is_deleted = true where number = ?")
-@SQLRestriction("is_deleted = false")
 public class Bus {
 
     @Id

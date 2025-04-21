@@ -30,6 +30,12 @@ public class BusService {
     }
 
     public Bus createBus(BusRequestDto bus) {
+        busRepository.returnToListById(bus.getNumber());
+
+        if (busRepository.findById(bus.getNumber()).isPresent()) {
+            return updateBus(bus);
+        }
+
         try {
             Bus newBus = new Bus(
                     bus.getNumber(),
@@ -93,7 +99,7 @@ public class BusService {
         try {
             Bus bus = busRepository.findById(number).get();
 
-            busRepository.delete(bus);
+            busRepository.deleteById(bus.getNumber());
         } catch (NoSuchElementException ex) {
             throw new NoDataException("No bus with number: " + number + "!");
         } catch (DataAccessException ex) {

@@ -4,10 +4,7 @@ import bus_app.dto.stations.StationDto;
 import bus_app.models.Path;
 import bus_app.models.PathStation;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
@@ -15,6 +12,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
 @Schema(description = "Модель ответа с информацией о пути следования")
 public class PathResponseDto {
 

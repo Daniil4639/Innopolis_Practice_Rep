@@ -14,9 +14,8 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
 @ToString
-@SQLDelete(sql = "update paths set is_deleted = true where number = ?")
-@SQLRestriction("is_deleted = false")
 public class Path {
 
     @Id
