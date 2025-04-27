@@ -1,10 +1,12 @@
 package bus_app.services;
 
 import bus_app.dto.stations.StationDto;
+import bus_app.exceptions.IncorrectBodyException;
 import bus_app.exceptions.NoDataException;
 import bus_app.models.Station;
 import bus_app.repositories.StationRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,14 +23,18 @@ public class StationService {
     }
 
     public Station addStation(StationDto station) {
-        Station newStation = new Station(
-                null,
-                station.getName(),
-                station.getDistrict(),
-                false
-        );
+        try {
+            Station newStation = new Station(
+                    null,
+                    station.getName(),
+                    station.getDistrict(),
+                    false
+            );
 
-        return stationRepository.saveAndFlush(newStation);
+            return stationRepository.saveAndFlush(newStation);
+        } catch (DataAccessException ex) {
+            throw new IncorrectBodyException(ex.getMessage());
+        }
     }
 
     public Station updateStation(Long id, StationDto station) {
@@ -45,6 +51,8 @@ public class StationService {
             return stationRepository.saveAndFlush(updatableStation);
         } catch (NoSuchElementException ex) {
             throw new NoDataException("No station with id: " + id + "!");
+        } catch (DataAccessException ex) {
+            throw new IncorrectBodyException(ex.getMessage());
         }
     }
 
@@ -55,6 +63,8 @@ public class StationService {
             stationRepository.delete(station);
         } catch (NoSuchElementException ex) {
             throw new NoDataException("No station with id: " + id + "!");
+        } catch (DataAccessException ex) {
+            throw new IncorrectBodyException(ex.getMessage());
         }
     }
 }

@@ -1,10 +1,12 @@
 package bus_app.services;
 
 import bus_app.dto.departments.DepartmentDto;
+import bus_app.exceptions.IncorrectBodyException;
 import bus_app.exceptions.NoDataException;
 import bus_app.models.Department;
 import bus_app.repositories.DepartmentRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,14 +23,18 @@ public class DepartmentService {
     }
 
     public Department addDepartment(DepartmentDto department) {
-        Department newDepartment = new Department(
-                null,
-                department.getName(),
-                department.getAddress(),
-                false
-        );
+        try {
+            Department newDepartment = new Department(
+                    null,
+                    department.getName(),
+                    department.getAddress(),
+                    false
+            );
 
-        return departmentRepository.saveAndFlush(newDepartment);
+            return departmentRepository.saveAndFlush(newDepartment);
+        } catch (DataAccessException ex) {
+            throw new IncorrectBodyException(ex.getMessage());
+        }
     }
 
     public Department updateDepartment(Long id, DepartmentDto department) {
@@ -45,6 +51,8 @@ public class DepartmentService {
             return departmentRepository.saveAndFlush(updatableDepartment);
         } catch (NoSuchElementException ex) {
             throw new NoDataException("No department with id: " + id + "!");
+        } catch (DataAccessException ex) {
+            throw new IncorrectBodyException(ex.getMessage());
         }
     }
 
@@ -55,6 +63,8 @@ public class DepartmentService {
             departmentRepository.delete(department);
         } catch (NoSuchElementException ex) {
             throw new NoDataException("No department with id: " + id + "!");
+        } catch (DataAccessException ex) {
+            throw new IncorrectBodyException(ex.getMessage());
         }
     }
 }

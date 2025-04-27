@@ -8,6 +8,7 @@ import bus_app.models.PathStation;
 import bus_app.repositories.PathRepository;
 import bus_app.repositories.StationRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -26,16 +27,17 @@ public class PathService {
     }
 
     public Path addPath(PathRequestDto path) {
-        pathRepository.returnToListById(path.getNumber());
-        if (pathRepository.findById(path.getNumber()).isPresent()) {
-            return updatePath(path);
-        }
-
-        if (path.getStations().size() != path.getTimesFromStartToStations().size()) {
-            throw new IncorrectBodyException("Stations array size is not equals a size of times array!");
-        }
-
         try {
+            pathRepository.returnToListById(path.getNumber());
+
+            if (pathRepository.findById(path.getNumber()).isPresent()) {
+                return updatePath(path);
+            }
+
+            if (path.getStations().size() != path.getTimesFromStartToStations().size()) {
+                throw new IncorrectBodyException("Stations array size is not equals a size of times array!");
+            }
+
             Path newPath = new Path(
                     path.getNumber(),
                     stationRepository.findById(path.getBeginStation()).get(),
@@ -60,6 +62,8 @@ public class PathService {
             return pathRepository.saveAndFlush(newPath);
         } catch (NoSuchElementException ex) {
             throw new IncorrectBodyException("Wrong create data!");
+        } catch (DataAccessException ex) {
+            throw new IncorrectBodyException(ex.getMessage());
         }
     }
 
@@ -70,6 +74,8 @@ public class PathService {
             updatablePath = pathRepository.findById(path.getNumber()).get();
         } catch (NoSuchElementException ex) {
             throw new NoDataException("No path with number: " + path.getNumber() + "!");
+        } catch (DataAccessException ex) {
+            throw new IncorrectBodyException(ex.getMessage());
         }
 
         try {
@@ -109,6 +115,8 @@ public class PathService {
             return pathRepository.saveAndFlush(updatablePath);
         } catch (NoSuchElementException ex) {
             throw new IncorrectBodyException("Wrong update data!");
+        } catch (DataAccessException ex) {
+            throw new IncorrectBodyException(ex.getMessage());
         }
     }
 
@@ -119,6 +127,8 @@ public class PathService {
             pathRepository.delete(path);
         } catch (NoSuchElementException ex) {
             throw new NoDataException("No path with number: " + number + "!");
+        } catch (DataAccessException ex) {
+            throw new IncorrectBodyException(ex.getMessage());
         }
     }
 }

@@ -76,6 +76,8 @@ CREATE TABLE IF NOT EXISTS buses (
     is_active BOOLEAN NOT NULL,
     is_deleted BOOLEAN NOT NULL,
 
+    CHECK (number ~ '^[0-9]*$'),
+
     FOREIGN KEY (path_number) REFERENCES paths (number) ON DELETE RESTRICT ON UPDATE CASCADE,
     FOREIGN KEY (department_id) REFERENCES departments (id) ON DELETE RESTRICT ON UPDATE CASCADE
 );

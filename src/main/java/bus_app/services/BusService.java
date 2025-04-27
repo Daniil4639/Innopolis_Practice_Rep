@@ -30,13 +30,13 @@ public class BusService {
     }
 
     public Bus createBus(BusRequestDto bus) {
-        busRepository.returnToListById(bus.getNumber());
-
-        if (busRepository.findById(bus.getNumber()).isPresent()) {
-            return updateBus(bus);
-        }
-
         try {
+            busRepository.returnToListById(bus.getNumber());
+
+            if (busRepository.findById(bus.getNumber()).isPresent()) {
+                return updateBus(bus);
+            }
+
             Bus newBus = new Bus(
                     bus.getNumber(),
                     pathRepository.findById(bus.getPath()).get(),

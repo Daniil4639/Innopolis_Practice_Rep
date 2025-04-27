@@ -1,10 +1,12 @@
 package bus_app.services;
 
 import bus_app.dto.drivers.DriverDto;
+import bus_app.exceptions.IncorrectBodyException;
 import bus_app.exceptions.NoDataException;
 import bus_app.models.Driver;
 import bus_app.repositories.DriverRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,15 +23,19 @@ public class DriverService {
     }
 
     public Driver addDriver(DriverDto driver) {
-        Driver newDriver = new Driver(
-                null,
-                driver.getName(),
-                driver.getAge(),
-                driver.getPhone(),
-                false
-        );
+        try {
+            Driver newDriver = new Driver(
+                    null,
+                    driver.getName(),
+                    driver.getAge(),
+                    driver.getPhone(),
+                    false
+            );
 
-        return driverRepository.saveAndFlush(newDriver);
+            return driverRepository.saveAndFlush(newDriver);
+        } catch (DataAccessException ex) {
+            throw new IncorrectBodyException(ex.getMessage());
+        }
     }
 
     public Driver updateDriver(Long id, DriverDto driver) {
@@ -49,6 +55,8 @@ public class DriverService {
             return driverRepository.saveAndFlush(updatableDriver);
         } catch (NoSuchElementException ex) {
             throw new NoDataException("No driver with id: " + id + "!");
+        } catch (DataAccessException ex) {
+            throw new IncorrectBodyException(ex.getMessage());
         }
     }
 
@@ -59,6 +67,8 @@ public class DriverService {
             driverRepository.delete(driver);
         } catch (NoSuchElementException ex) {
             throw new NoDataException("No driver with id: " + id + "!");
+        } catch (DataAccessException ex) {
+            throw new IncorrectBodyException(ex.getMessage());
         }
     }
 }
