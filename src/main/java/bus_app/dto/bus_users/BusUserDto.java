@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Класс формата получения информации об авторизационных данных пользователя
+ */
 @Getter
 @Setter
 @NoArgsConstructor
@@ -13,9 +16,15 @@ import lombok.Setter;
 @Schema(description = "Модель запроса с информацией о пользователе с правами доступа")
 public class BusUserDto {
 
+    /**
+     * Имя пользователя
+     */
     @Schema(description = "Имя пользователя")
     private String username;
 
+    /**
+     * Пароль пользователя
+      */
     @Schema(description = "Пароль пользователя")
     private String password;
 }

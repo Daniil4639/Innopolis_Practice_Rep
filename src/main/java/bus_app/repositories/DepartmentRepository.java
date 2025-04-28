@@ -11,6 +11,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Класс - репозиторий для доступа к записям о департаментах
+ */
 @Repository
 @CacheConfig(cacheNames = "departments")
 public interface DepartmentRepository extends JpaRepository<Department, Long> {

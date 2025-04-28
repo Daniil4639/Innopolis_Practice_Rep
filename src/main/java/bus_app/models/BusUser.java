@@ -10,6 +10,9 @@ import lombok.Setter;
 
 import java.util.List;
 
+/**
+ * Класс - сущность объектов таблицы users
+ */
 @Entity
 @Table(name = "bus_users")
 @Getter
@@ -18,10 +21,19 @@ import java.util.List;
 @AllArgsConstructor
 public class BusUser {
 
+    /**
+     * Имя пользователя
+     */
     @Id
     private String username;
 
+    /**
+     * Пароль пользователя
+     */
     private String password;
 
+    /**
+     * Список уровней доступа пользователя
+     */
     private List<String> roles;
 }

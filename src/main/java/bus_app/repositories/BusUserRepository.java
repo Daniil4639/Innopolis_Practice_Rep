@@ -8,6 +8,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+/**
+ * Класс - репозиторий для доступа к записям о пользователях
+ */
 @Repository
 @CacheConfig(cacheNames = "users")
 public interface BusUserRepository extends JpaRepository<BusUser, String> {

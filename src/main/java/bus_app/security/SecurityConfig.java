@@ -23,15 +23,28 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
+/**
+ * Класс конфигурации уровней доступа к API приложения
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
+    /**
+     * Метод создания бина кодировщика паролей
+     * @return экземпляр кодировщика паролей для БД
+     */
     @Bean
     public PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder(BCryptPasswordEncoder.BCryptVersion.$2A, 15);
     }
 
+    /**
+     * Метод создания бина сервиса аутентификации с заданными инструментами доступа к данным о пользоателях
+     * @param service экземпляр класс с API для получения информации о пользователе и его уровнях доступа
+     * @param encoder экземпляр кодировщика паролей
+     * @return экземпляр сервиса аутентификации пользователя
+     */
     @Bean
     public AuthenticationProvider authenticationProvider(BusUserService service, PasswordEncoder encoder) {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -40,12 +53,22 @@ public class SecurityConfig {
         return authProvider;
     }
 
+    /**
+     * Метод создания бина менеджера аутентификации
+     * @param config экземпляр класса конфигурации параметров аутентификации
+     * @return экземпляр менеджера аутентификации
+     * @throws Exception ошибка при получении экземпляра менеджера аутентификации
+     */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config)
             throws Exception {
         return config.getAuthenticationManager();
     }
 
+    /**
+     * Метод, предоставляющий экземпляр конфигурации CORS - защиты с параметрами свободного доступа
+     * @return экземпляр конфигурации CORS - защиты
+     */
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("*"));
@@ -58,6 +81,14 @@ public class SecurityConfig {
         return source;
     }
 
+    /**
+     * Метод создания бина класса цепочки фильтров доступа к API
+     * @param http объект класса, предоставляющего инструменты для настройки цепочки защиты API
+     * @param provider экземпляр сервиса аутентификации пользователя
+     * @param filter средство валидации JWT - токенов
+     * @return экземпляр цепочки защиты API
+     * @throws Exception ошибка формирования цепочки защиты
+     */
     @Bean
     public SecurityFilterChain configSecurityChain(HttpSecurity http,
                                                    AuthenticationProvider provider,

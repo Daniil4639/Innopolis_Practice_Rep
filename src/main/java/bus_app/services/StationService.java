@@ -12,16 +12,32 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+/**
+ * Класс, предоставляющий интерфейс для обработки полученных через MVC данных от клиента
+ * и получения / модификации записей об остановках
+ */
 @Service
 @RequiredArgsConstructor
 public class StationService {
 
+    /**
+     * Экземпляр класса для общения со схемой остановок в БД
+     */
     private final StationRepository stationRepository;
 
+    /**
+     * Метод получения списка всех остановок
+     * @return список всех записей об остановках
+     */
     public List<Station> readAllStations() {
         return stationRepository.findAll();
     }
 
+    /**
+     * Метод создания новой записи об остановке
+     * @param station объект, содержащий основную информацию для создания новой записи
+     * @return объект с информацией о новой остановке из БД
+     */
     public Station addStation(StationDto station) {
         try {
             Station newStation = new Station(
@@ -37,6 +53,12 @@ public class StationService {
         }
     }
 
+    /**
+     * Метод модификации записи об остановке в БД
+     * @param id номер остановки
+     * @param station объект, содержащий основную информацию для модификации записи
+     * @return объект с информацией о модифицированной остановке из БД
+     */
     public Station updateStation(Long id, StationDto station) {
         try {
             Station updatableStation = stationRepository.findById(id).get();
@@ -56,6 +78,10 @@ public class StationService {
         }
     }
 
+    /**
+     * Метод удаления записи об остановке по его номеру
+     * @param id номер остановки, информацию о котором нужно удалить / скрыть
+     */
     public void deleteStation(Long id) {
         try {
             Station station = stationRepository.findById(id).get();

@@ -11,6 +11,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Класс - репозиторий для доступа к записям об автобусах
+ */
 @Repository
 @CacheConfig(cacheNames = "buses")
 public interface BusRepository extends JpaRepository<Bus, String> {

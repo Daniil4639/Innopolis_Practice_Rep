@@ -11,6 +11,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Класс - репозиторий для доступа к записям о водителях
+ */
 @Repository
 @CacheConfig(cacheNames = "drivers")
 public interface DriverRepository extends JpaRepository<Driver, Long> {

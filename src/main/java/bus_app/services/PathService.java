@@ -15,17 +15,37 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+/**
+ * Класс, предоставляющий интерфейс для обработки полученных через MVC данных от клиента
+ * и получения / модификации записей о путях следования
+ */
 @Service
 @RequiredArgsConstructor
 public class PathService {
 
+    /**
+     * Экземпляр класса для общения со схемой путей следования в БД
+     */
     private final PathRepository pathRepository;
+
+    /**
+     * Экземпляр класса для общения со схемой остановок в БД
+     */
     private final StationRepository stationRepository;
 
+    /**
+     * Метод получения списка всех путей
+     * @return список всех записей о путях
+     */
     public List<Path> readAllPaths() {
         return pathRepository.findAll();
     }
 
+    /**
+     * Метод создания новой записи о путе следования
+     * @param path объект, содержащий основную информацию для создания новой записи
+     * @return объект с информацией о новом пути следования из БД
+     */
     public Path addPath(PathRequestDto path) {
         try {
             pathRepository.returnToListById(path.getNumber());
@@ -67,6 +87,11 @@ public class PathService {
         }
     }
 
+    /**
+     * Метод модификации записи о пути следования в БД
+     * @param path объект, содержащий основную информацию для модификации записи
+     * @return объект с информацией о модифицированном департаменте из БД
+     */
     public Path updatePath(PathRequestDto path) {
         Path updatablePath;
 
@@ -120,6 +145,11 @@ public class PathService {
         }
     }
 
+
+    /**
+     * Метод удаления записи о пути по его номеру
+     * @param number номер пути, информацию о котором нужно удалить / скрыть
+     */
     public void deletePath(String number) {
         try {
             Path path = pathRepository.findById(number).get();

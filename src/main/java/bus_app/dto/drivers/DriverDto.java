@@ -4,6 +4,9 @@ import bus_app.models.Driver;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
+/**
+ * Класс формата получения от пользователя и отправки пользователю информации о водителе
+ */
 @Getter
 @Setter
 @NoArgsConstructor
@@ -12,12 +15,21 @@ import lombok.*;
 @Schema(description = "Модель с информацией о водителе")
 public class DriverDto {
 
+    /**
+     * ФИО водителя
+     */
     @Schema(description = "ФИО водителя")
     private String name;
 
+    /**
+     * Возраст водителя
+     */
     @Schema(description = "Возраст водителя")
     private Integer age;
 
+    /**
+     * Телефон водителя
+     */
     @Schema(description = "Телефон водителя")
     private String phone;
 

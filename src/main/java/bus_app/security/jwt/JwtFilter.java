@@ -18,15 +18,33 @@ import org.thymeleaf.util.StringUtils;
 
 import java.io.IOException;
 
+/**
+ * Класс фильтра / средства валидации JWT - токенов
+ */
 @Component
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
 
+    /**
+     * Экземпляр класса, предоставляющего инструменты для проверки валидности токена и генерации нового
+     */
     private final JwtService jwtService;
+
+    /**
+     * Экземпляр класса, предоставляющего доступ к информации о пользователях и уровнях доступа
+     */
     private final BusUserService busUserService;
 
+    /**
+     *
+     * @param request информация о запросе пользователя
+     * @param response информация об ответе пользователю
+     * @param filterChain цепь фильтров защиты API
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException, ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authHeader = "";
 
         Cookie[] cookies = request.getCookies();

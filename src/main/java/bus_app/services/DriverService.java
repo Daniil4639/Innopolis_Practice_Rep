@@ -12,16 +12,32 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+/**
+ * Класс, предоставляющий интерфейс для обработки полученных через MVC данных от клиента
+ * и получения / модификации записей о водителях
+ */
 @Service
 @RequiredArgsConstructor
 public class DriverService {
 
+    /**
+     * Экземпляр класса для общения со схемой водителей в БД
+     */
     private final DriverRepository driverRepository;
 
+    /**
+     * Метод получения списка всех водителей
+     * @return список всех записей о водителях
+     */
     public List<Driver> readAllDrivers() {
         return driverRepository.findAll();
     }
 
+    /**
+     * Метод создания новой записи о водителе
+     * @param driver объект, содержащий основную информацию для создания новой записи
+     * @return объект с информацией о новом водителе из БД
+     */
     public Driver addDriver(DriverDto driver) {
         try {
             Driver newDriver = new Driver(
@@ -38,6 +54,12 @@ public class DriverService {
         }
     }
 
+    /**
+     * Метод модификации записи о водителе в БД
+     * @param id номер водителя
+     * @param driver объект, содержащий основную информацию для модификации записи
+     * @return объект с информацией о модифицированном водителе из БД
+     */
     public Driver updateDriver(Long id, DriverDto driver) {
         try {
             Driver updatableDriver = driverRepository.findById(id).get();
@@ -60,6 +82,10 @@ public class DriverService {
         }
     }
 
+    /**
+     * Метод удаления записи о водителе по его номеру
+     * @param id номер водителя, информацию о котором нужно удалить / скрыть
+     */
     public void deleteDriver(Long id) {
         try {
             Driver driver = driverRepository.findById(id).get();

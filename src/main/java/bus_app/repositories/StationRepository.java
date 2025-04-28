@@ -11,6 +11,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Класс - репозиторий для доступа к записям об остановках
+ */
 @Repository
 @CacheConfig(cacheNames = "stations")
 public interface StationRepository extends JpaRepository<Station, Long> {

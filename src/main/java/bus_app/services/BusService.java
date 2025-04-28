@@ -16,19 +16,47 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+/**
+ * Класс, предоставляющий интерфейс для обработки полученных через MVC данных от клиента
+ * и получения / модификации записей об автобусах
+ */
 @Service
 @RequiredArgsConstructor
 public class BusService {
 
+    /**
+     * Экземпляр класса для общения со схемой автобусов в БД
+     */
     private final BusRepository busRepository;
+
+    /**
+     * Экземпляр класса для общения со схемой путей следования в БД
+     */
     private final PathRepository pathRepository;
+
+    /**
+     * Экземпляр класса для общения со схемой департаментов в БД
+     */
     private final DepartmentRepository departmentRepository;
+
+    /**
+     * Экземпляр класса для общения со схемой водителей в БД
+     */
     private final DriverRepository driverRepository;
 
+    /**
+     * Метод получения списка всех автобусов
+     * @return список всех записей об автобусах
+     */
     public List<Bus> readAllBuses() {
         return busRepository.findAll();
     }
 
+    /**
+     * Метод создания новой записи об автобусе
+     * @param bus объект, содержащий основную информацию для создания новой записи
+     * @return объект с информацией о новом автобусе из БД
+     */
     public Bus createBus(BusRequestDto bus) {
         try {
             busRepository.returnToListById(bus.getNumber());
@@ -56,6 +84,11 @@ public class BusService {
         }
     }
 
+    /**
+     * Метод модификации записи об автобусе в БД
+     * @param bus объект, содержащий основную информацию для модификации записи
+     * @return объект с информацией о модифицированном автобусе из БД
+     */
     public Bus updateBus(BusRequestDto bus) {
         Bus updatableBus;
         try {
@@ -95,6 +128,10 @@ public class BusService {
         }
     }
 
+    /**
+     * Метод удаления записи об автобусе по его номеру
+     * @param number номер автобуса, информацию о котором нужно удалить / скрыть
+     */
     public void deleteBus(String number) {
         try {
             Bus bus = busRepository.findById(number).get();

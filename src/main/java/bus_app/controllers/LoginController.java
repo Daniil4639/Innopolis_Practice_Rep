@@ -19,16 +19,35 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Класс контроллера, предоставляющего API для получения JWT - токена
+ */
 @RestController
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
 @Tag(name = "Авторизация", description = "API для получения авторизационного токена")
 public class LoginController {
 
+    /**
+     * Экземпляр менеджера аутентификационных данных
+     */
     private final AuthenticationManager manager;
+
+    /**
+     * Экземпляр сервиса для получения данных о пользователе
+     */
     private final BusUserService userDetailsService;
+
+    /**
+     * Экземпляр сервиса для генерации токена
+     */
     private final JwtService jwtService;
 
+    /**
+     * Метод получения JWT - токена
+     * @param userDto данные о пользователе {username, password}
+     * @return токен для авторизации
+     */
     @Operation(
             summary = "Получить JWT - токен",
             description = "Возвращает токен в случае успешной авторизации",

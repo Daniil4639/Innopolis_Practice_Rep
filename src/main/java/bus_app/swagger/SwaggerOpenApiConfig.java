@@ -9,6 +9,9 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.security.SecuritySchemes;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Класс конфигурации настроек отображения графического интерфейса SWAGGER
+ */
 @Configuration
 @OpenAPIDefinition(
         info = @Info(

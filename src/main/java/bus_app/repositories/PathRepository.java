@@ -11,6 +11,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Класс - репозиторий для доступа к записям о путях следования
+ */
 @Repository
 @CacheConfig(cacheNames = "paths")
 public interface PathRepository extends JpaRepository<Path, String> {

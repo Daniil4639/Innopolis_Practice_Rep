@@ -8,6 +8,9 @@ import lombok.*;
 
 import java.util.List;
 
+/**
+ * Класс формата отправки пользователю информации о пути следования
+ */
 @Getter
 @Setter
 @NoArgsConstructor
@@ -16,18 +19,33 @@ import java.util.List;
 @Schema(description = "Модель ответа с информацией о пути следования")
 public class PathResponseDto {
 
+    /**
+     * Номер пути следования
+     */
     @Schema(description = "Номер пути следования")
     private String number;
 
+    /**
+     * Начальная остановка
+     */
     @Schema(description = "Информация о начальной станции")
     private StationDto beginStation;
 
+    /**
+     * Конечная остановка
+     */
     @Schema(description = "Информация о конечной станции")
     private StationDto endStation;
 
+    /**
+     * Список остановок на пути следования
+     */
     @Schema(description = "Список всех станций на пути")
     private List<StationDto> stations;
 
+    /**
+     * Продолжительность пути
+     */
     @Schema(description = "Продолжительность пути")
     private Integer duration;
 
