@@ -1,15 +1,18 @@
 package app.models;
 
 import app.exceptions.IncorrectBodyException;
+import app.models.dto.StudentRegistrationDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Entity
 @Table(name = "students")
 @Getter
 @Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
@@ -28,8 +31,24 @@ public class Student {
     @Column(name = "email")
     private String email;
 
+    @Column(name = "password")
+    private String password;
+
+    @Column(name = "roles")
+    private String[] roles;
+
     @Column(name = "grades_list")
     private Integer[] gradesList;
+
+    public Student(StudentRegistrationDTO registrationDTO) {
+        this.id = null;
+        this.fullName = registrationDTO.getFullName();
+        this.age = registrationDTO.getAge();
+        this.email = registrationDTO.getEmail();
+        this.password = registrationDTO.getPassword();
+        this.roles = new String[] {"USER"};
+        this.gradesList = new Integer[] {};
+    }
 
     public static void isStudentCorrect(Student student) throws IncorrectBodyException {
         if (student.getFullName() == null || student.email == null || student.gradesList == null

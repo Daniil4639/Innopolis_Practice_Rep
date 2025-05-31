@@ -21,7 +21,7 @@ public class StudentServiceIncorrectTest extends StudentServiceAbstractTest {
     @DisplayName("Students: service gets null | create")
     public void createNullTest() throws NoDataException {
         Student student = new Student(
-                1, null, 19, "test_email@test.ru", new Integer[] {1}
+                1, null, 19, "test_email@test.ru", "test_password", new String[] {"USER"},new Integer[] {1}
         );
 
         try {
@@ -34,7 +34,7 @@ public class StudentServiceIncorrectTest extends StudentServiceAbstractTest {
     @DisplayName("Students: service invalidation | create")
     public void createInvalidationTest() throws NoDataException {
         Student student = new Student(
-                1, "TestName TestSecondName", 19, "test_email@test.ru", new Integer[] {1}
+                1, "TestName TestSecondName", 19, "test_email@test.ru", "test_password", new String[] {"USER"},new Integer[] {1}
         );
 
         try {
@@ -47,7 +47,7 @@ public class StudentServiceIncorrectTest extends StudentServiceAbstractTest {
     @DisplayName("Students: service gets incorrect grades | create")
     public void createIncorrectGradesTest() throws IncorrectBodyException, NoDataException {
         Student student = new Student(
-                1, "TestName TestSecondName TestThirdName", 19, "test_email@test.ru", new Integer[] {1}
+                1, "TestName TestSecondName TestThirdName", 19, "test_email@test.ru", "test_password", new String[] {"USER"},new Integer[] {1}
         );
 
         Mockito.when(gradeClient.readGrade(1)).thenThrow(NoDataException.class);
@@ -73,7 +73,7 @@ public class StudentServiceIncorrectTest extends StudentServiceAbstractTest {
     @DisplayName("Students: service invalidation | update")
     public void updateInvalidationTest() throws NoDataException {
         Student student = new Student(
-                1, "TestName TestSecondName", 19, "test_email@test.ru", new Integer[] {1}
+                1, "TestName TestSecondName", 19, "test_email@test.ru", "test_password", new String[] {"USER"},new Integer[] {1}
         );
         Grade grade = new Grade(1, "test_grade", LocalDate.now(), true);
         Mockito.when(gradeClient.readGrade(1)).thenReturn(grade);
@@ -88,7 +88,7 @@ public class StudentServiceIncorrectTest extends StudentServiceAbstractTest {
     @DisplayName("Students: service gets incorrect grades | update")
     public void updateIncorrectGradesTest() throws IncorrectBodyException, NoDataException {
         Student student = new Student(
-                1, null, null, null, new Integer[] {1}
+                1, null, null, null, null, new String[] {"USER"},new Integer[] {1}
         );
 
         Mockito.when(gradeClient.readGrade(1)).thenThrow(NoDataException.class);

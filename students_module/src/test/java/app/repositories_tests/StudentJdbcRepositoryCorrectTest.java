@@ -30,7 +30,7 @@ public class StudentJdbcRepositoryCorrectTest extends TestDBContainerInitializer
     @DisplayName("Students: correct create test")
     public void testCreate() throws IncorrectBodyException, NoDataException {
         Student student = studentJdbcRepository.createStudent(new Student(
-                null, "testName testSecondName testThirdName", 19, "test_email@test.ru", new Integer[] {1, 2, 3}
+                null, "testName testSecondName testThirdName", 19, "test_email@test.ru", "test_password", new String[] {"USER"},new Integer[] {1, 2, 3}
         ));
 
         Student receivedStudent = template.queryForObject(
@@ -49,14 +49,14 @@ public class StudentJdbcRepositoryCorrectTest extends TestDBContainerInitializer
     @DisplayName("Students: correct read test")
     public void testRead() throws NoDataException {
         Integer id = template.queryForObject(
-                "insert into students values(default, 'test_user', 19, 'test_email', ARRAY[1]) returning id",
+                "insert into students values(default, 'test_user', 19, 'test_email_3', 'test_password', ARRAY['USER'], ARRAY[1]) returning id",
                 Integer.class
         );
 
         Student student = studentJdbcRepository.readStudent(id);
         assert (student.getFullName().equals("test_user"));
         assert (student.getAge()).equals(19);
-        assert (student.getEmail().equals("test_email"));
+        assert (student.getEmail().equals("test_email_3"));
         assert (Arrays.stream(student.getGradesList()).collect(Collectors.toSet()).contains(1));
     }
 
@@ -64,12 +64,12 @@ public class StudentJdbcRepositoryCorrectTest extends TestDBContainerInitializer
     @DisplayName("Students: correct update test")
     public void updateTest() throws IncorrectBodyException, NoDataException {
         Integer id = template.queryForObject(
-                "insert into students values(default, 'test_user', 19, 'test_email', ARRAY[1]) returning id",
+                "insert into students values(default, 'test_user', 19, 'test_email_4', 'test_password', ARRAY['USER'], ARRAY[1]) returning id",
                 Integer.class
         );
 
         Student student = studentJdbcRepository.updateStudent(id,
-                new Student(null, "newTestName testSecondName testThirdName", null, null, null));
+                new Student(null, "newTestName testSecondName testThirdName", null, null, null, null, null));
 
         assert (student.getFullName().equals("newTestName testSecondName testThirdName"));
     }
@@ -78,7 +78,7 @@ public class StudentJdbcRepositoryCorrectTest extends TestDBContainerInitializer
     @DisplayName("Students: correct add grade test")
     public void addGradeTest() throws NoDataException {
         Integer id = template.queryForObject(
-                "insert into students values(default, 'test_user', 19, 'test_email', ARRAY[1]) returning id",
+                "insert into students values(default, 'test_user', 19, 'test_email', 'test_password', ARRAY['USER'], ARRAY[1]) returning id",
                 Integer.class
         );
 
@@ -91,7 +91,7 @@ public class StudentJdbcRepositoryCorrectTest extends TestDBContainerInitializer
     @DisplayName("Students: correct delete test")
     public void deleteTest() throws NoDataException {
         Integer id = template.queryForObject(
-                "insert into students values(default, 'test_user', 19, 'test_email', ARRAY[1]) returning id",
+                "insert into students values(default, 'test_user', 19, 'test_email', 'test_password', ARRAY['USER'], ARRAY[1]) returning id",
                 Integer.class
         );
 
@@ -112,8 +112,8 @@ public class StudentJdbcRepositoryCorrectTest extends TestDBContainerInitializer
     @DisplayName("Students: correct get all students test")
     public void getAllTest() {
         template.execute("delete from students");
-        template.execute("insert into students values(default, 'test_user_1', 19, 'test_email', ARRAY[1])");
-        template.execute("insert into students values(default, 'test_user_2', 19, 'test_email', ARRAY[1])");
+        template.execute("insert into students values(default, 'test_user_1', 19, 'test_email_1', 'test_password', ARRAY['USER'], ARRAY[1])");
+        template.execute("insert into students values(default, 'test_user_2', 19, 'test_email_2', 'test_password', ARRAY['USER'], ARRAY[1])");
 
         List<String> students = studentJdbcRepository.getAllStudentsByGrade(1).stream()
                 .map(Student::getFullName)

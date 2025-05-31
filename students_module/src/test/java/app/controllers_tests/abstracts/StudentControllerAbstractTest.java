@@ -1,6 +1,5 @@
 package app.controllers_tests.abstracts;
 
-import app.configs.SessionData;
 import app.controllers.StudentController;
 import app.services.StudentService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -28,9 +27,6 @@ public class StudentControllerAbstractTest {
 
     @MockBean
     protected StudentService service;
-
-    @MockBean
-    protected SessionData sessionData;
 
     protected MockMvc mockMvc;
 

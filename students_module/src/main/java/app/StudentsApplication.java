@@ -5,7 +5,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
-@EnableWebMvc
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 @SpringBootApplication
 public class StudentsApplication {

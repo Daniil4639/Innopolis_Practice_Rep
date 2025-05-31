@@ -26,7 +26,7 @@ public class StudentServiceCorrectTest extends StudentServiceAbstractTest {
     @DisplayName("Students: service correct create")
     public void createTest() throws IncorrectBodyException, NoDataException {
         Student student = new Student(
-                1, "TestName TestSecondName TestThirdName", 19, "test_email@test.ru", new Integer[] {1}
+                1, "TestName TestSecondName TestThirdName", 19, "test_email@test.ru", "test_password", new String[] {"USER"}, new Integer[] {1}
         );
 
         Mockito.when(studentJdbcRepository.createStudent(student)).thenReturn(student);
@@ -45,7 +45,7 @@ public class StudentServiceCorrectTest extends StudentServiceAbstractTest {
     @DisplayName("Students: service correct read")
     public void readTest() throws NoDataException {
         Student student = new Student(
-                1, "TestName TestSecondName TestThirdName", 19, "test_email@test.ru", new Integer[] {1}
+                1, "TestName TestSecondName TestThirdName", 19, "test_email@test.ru","test_password", new String[] {"USER"}, new Integer[] {1}
         );
 
         Mockito.when(studentJdbcRepository.readStudent(1)).thenReturn(student);
@@ -61,7 +61,7 @@ public class StudentServiceCorrectTest extends StudentServiceAbstractTest {
     @DisplayName("Students: service correct update")
     public void updateTest() throws IncorrectBodyException, NoDataException {
         Student student = new Student(
-                1, "TestName TestSecondName TestThirdName", 19, "test_email@test.ru", new Integer[] {1}
+                1, "TestName TestSecondName TestThirdName", 19, "test_email@test.ru","test_password", new String[] {"USER"}, new Integer[] {1}
         );
 
         Mockito.when(studentJdbcRepository.updateStudent(1, student)).thenReturn(student);
@@ -87,7 +87,7 @@ public class StudentServiceCorrectTest extends StudentServiceAbstractTest {
     @DisplayName("Students: service correct add grade")
     public void addGradeTest() throws NoDataException {
         Student student = new Student(
-                1, "TestName TestSecondName TestThirdName", 19, "test_email@test.ru", new Integer[] {1, 2}
+                1, "TestName TestSecondName TestThirdName", 19, "test_email@test.ru","test_password", new String[] {"USER"}, new Integer[] {1, 2}
         );
         Grade grade = new Grade(2, "test_grade", LocalDate.now(), true);
         Mockito.when(gradeClient.readGrade(2)).thenReturn(grade);
@@ -103,7 +103,7 @@ public class StudentServiceCorrectTest extends StudentServiceAbstractTest {
     @DisplayName("Students: service get all test")
     public void getAllTest() {
         Student student = new Student(
-                1, "test_user", 19, "new_test_email", new Integer[] {1, 2}
+                1, "test_user", 19, "new_test_email", "test_password", new String[] {"USER"},new Integer[] {1, 2}
         );
         List<Student> students = new ArrayList<>(List.of(student));
 
@@ -121,7 +121,7 @@ public class StudentServiceCorrectTest extends StudentServiceAbstractTest {
     @DisplayName("Students: service more age test")
     public void moreAgeTest() {
         Student student = new Student(
-                1, "test_user", 19, "new_test_email", new Integer[] {1, 2}
+                1, "test_user", 19, "new_test_email", "test_password", new String[] {"USER"},new Integer[] {1, 2}
         );
         List<Student> students = new ArrayList<>(List.of(student));
 
@@ -136,7 +136,7 @@ public class StudentServiceCorrectTest extends StudentServiceAbstractTest {
     @DisplayName("Students: service less age test")
     public void lessAgeTest() {
         Student student = new Student(
-                1, "test_user", 19, "new_test_email", new Integer[] {1, 2}
+                1, "test_user", 19, "new_test_email", "test_password", new String[] {"USER"},new Integer[] {1, 2}
         );
         List<Student> students = new ArrayList<>(List.of(student));
 
@@ -151,7 +151,7 @@ public class StudentServiceCorrectTest extends StudentServiceAbstractTest {
     @DisplayName("Students: service equal age test")
     public void equalAgeTest() {
         Student student = new Student(
-                1, "test_user", 19, "new_test_email", new Integer[] {1, 2}
+                1, "test_user", 19, "new_test_email", "test_password", new String[] {"USER"},new Integer[] {1, 2}
         );
         List<Student> students = new ArrayList<>(List.of(student));
 
@@ -175,10 +175,10 @@ public class StudentServiceCorrectTest extends StudentServiceAbstractTest {
     public void namesSortTest() {
         List<Student> students = new ArrayList<>(List.of(
                 new Student(
-                        1, "test_user_2", 19, "new_test_email", new Integer[] {1, 2}
+                        1, "test_user_2", 19, "new_test_email", "test_password", new String[] {"USER"},new Integer[] {1, 2}
                 ),
                 new Student(
-                        2, "test_user_1", 19, "new_test_email", new Integer[] {1, 2}
+                        2, "test_user_1", 19, "new_test_email", "test_password", new String[] {"USER"},new Integer[] {1, 2}
                 )
         ));
 
@@ -192,10 +192,10 @@ public class StudentServiceCorrectTest extends StudentServiceAbstractTest {
     public void topEmailTest() {
         List<Student> students = new ArrayList<>(List.of(
                 new Student(
-                        1, "test_user_2", 19, "new_test_email_longest", new Integer[] {1, 2}
+                        1, "test_user_2", 19, "new_test_email_longest", "test_password", new String[] {"USER"},new Integer[] {1, 2}
                 ),
                 new Student(
-                        2, "test_user_1", 19, "new_test_email", new Integer[] {1, 2}
+                        2, "test_user_1", 19, "new_test_email", "test_password", new String[] {"USER"},new Integer[] {1, 2}
                 )
         ));
 
@@ -210,10 +210,10 @@ public class StudentServiceCorrectTest extends StudentServiceAbstractTest {
     public void gradesCountTest() {
         List<Student> students = new ArrayList<>(List.of(
                 new Student(
-                        1, "test_user_2", 19, "new_test_email", new Integer[]{1, 2}
+                        1, "test_user_2", 19, "new_test_email", "test_password", new String[] {"USER"},new Integer[]{1, 2}
                 ),
                 new Student(
-                        2, "test_user_1", 19, "new_test_email", new Integer[]{1, 2}
+                        2, "test_user_1", 19, "new_test_email", "test_password", new String[] {"USER"},new Integer[]{1, 2}
                 )
         ));
 
@@ -227,10 +227,10 @@ public class StudentServiceCorrectTest extends StudentServiceAbstractTest {
     public void filterTest() {
         List<Student> students = new ArrayList<>(List.of(
                 new Student(
-                        1, "test_user_2", 19, "new_test_email_longest", new Integer[] {1, 2}
+                        1, "test_user_2", 19, "new_test_email_longest", "test_password", new String[] {"USER"},new Integer[] {1, 2}
                 ),
                 new Student(
-                        2, "test_user_1", 19, "new_test_email", new Integer[] {1, 2}
+                        2, "test_user_1", 19, "new_test_email", "test_password", new String[] {"USER"},new Integer[] {1, 2}
                 )
         ));
 

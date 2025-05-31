@@ -86,18 +86,9 @@ public class StudentJpaRepositoryTest extends TestDBContainerInitializer {
     @Test
     @DisplayName("Students: grades count test")
     public void gradesCountTest() {
-        List<Student> students = new ArrayList<>(List.of(
-                new Student(
-                        2, "Наумова Анна Артёмовна", 42, "vewad_ewicu45@hotmail.com",
-                        new Integer[] {1, 4}
-                ),
-                new Student(
-                        4, "Козлов Александр Савельевич", 28, "yomano_wavo78@gmail.com",
-                        new Integer[] {1, 3}
-                )
-        ));
-
-        assert studentJpaRepository.findWithMoreGradesThan(1).equals(students);
+        assert studentJpaRepository.findWithMoreGradesThan(1).stream()
+                .map(Student::getId).toList()
+                .equals(List.of(2, 4));
     }
 
     @Test
