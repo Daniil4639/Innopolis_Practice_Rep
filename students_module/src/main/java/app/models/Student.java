@@ -52,7 +52,7 @@ public class Student {
 
     public static void isStudentCorrect(Student student) throws IncorrectBodyException {
         if (student.getFullName() == null || student.email == null || student.gradesList == null
-            || student.getAge() == null) {
+            || student.getAge() == null || student.getPassword() == null) {
             throw new IncorrectBodyException("Incorrect received body");
         }
 

@@ -12,6 +12,7 @@
         <module>students_module</module>
         <module>comments_module</module>
         <module>grades_scheduler_module</module>
+        <module>email_sender_module</module>
     </modules>
     <version>1.0</version>
 
