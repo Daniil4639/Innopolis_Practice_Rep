@@ -38,7 +38,7 @@ public class GradeController {
     }
 
     @DeleteMapping("/archive/{id}")
-    public GradeDto putGradeIntoArchive(@PathVariable("id") Integer id) {
-        return new GradeDto(service.putGradeIntoArchive(id));
+    public void putGradeIntoArchive(@PathVariable("id") Integer id) {
+        service.putGradeIntoArchive(id);
     }
 }

@@ -34,7 +34,7 @@ public class GradeService {
         return repository.readGrade(id);
     }
 
-    public Grade putGradeIntoArchive(Integer id) {
-        return repository.putGradeIntoArchive(id);
+    public void putGradeIntoArchive(Integer id) {
+        repository.putGradeIntoArchive(id);
     }
 }
