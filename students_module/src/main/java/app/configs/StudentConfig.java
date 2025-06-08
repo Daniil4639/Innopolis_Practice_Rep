@@ -6,8 +6,11 @@ import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @Configuration
@@ -19,6 +22,9 @@ public class StudentConfig {
 
     @Value("${comment.client.url}")
     private String commentClientUrl;
+
+    @Value("${sender.client.url}")
+    private String senderClientUrl;
 
     @Value("${spring.datasource.driver}")
     private String dataDriver;
@@ -34,6 +40,14 @@ public class StudentConfig {
 
     @Value("${spring.datasource.hikari.schema}")
     private String dataSchema;
+
+    @Bean
+    public WebClient getSenderClient() {
+        return WebClient.builder()
+                .baseUrl(senderClientUrl)
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .build();
+    }
 
     @Bean
     public DriverManagerDataSource getDataSource() {

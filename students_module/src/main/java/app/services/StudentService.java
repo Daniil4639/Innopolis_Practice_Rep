@@ -1,6 +1,6 @@
 package app.services;
 
-import app.aspects.LogExecTime;
+import app.aspects.*;
 import app.clients.CommentClient;
 import app.clients.GradeClient;
 import app.exceptions.GradeIsNotActiveException;
@@ -12,12 +12,9 @@ import app.models.Student;
 import app.models.dto.StudentForUserDTO;
 import app.repositories.StudentJdbcRepository;
 import app.repositories.StudentJpaRepository;
-import app.security.StudentDetails;
 import app.services.interfaces.BasedCRUDService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.domain.JpaSort;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -43,6 +40,7 @@ public class StudentService implements BasedCRUDService<Student> {
 
     @Override
     @LogExecTime
+    @SendAfterRegistration
     public Student create(Student obj) throws IncorrectBodyException, NoDataException {
         Student.isStudentCorrect(obj);
         for (Integer gradeId: obj.getGradesList()) {
@@ -67,6 +65,7 @@ public class StudentService implements BasedCRUDService<Student> {
         return studentJdbcRepository.readStudent(id);
     }
 
+    @SendAfterUpdate
     @Override
     public Student update(Integer id, Student obj) throws IncorrectBodyException, NoDataException {
         if (obj.getGradesList() != null) {
@@ -93,6 +92,7 @@ public class StudentService implements BasedCRUDService<Student> {
         return studentJdbcRepository.deleteStudent(id);
     }
 
+    @SendAfterAddGrade
     @LogExecTime
     public Student addGrade(Integer id, Integer gradeId) throws NoDataException {
         checkGradeId(gradeId);
@@ -150,6 +150,7 @@ public class StudentService implements BasedCRUDService<Student> {
         return studentJpaRepository.findAll(spec);
     }
 
+    @SendAfterComment
     public Comment addComment(Integer student, Integer grade, String text) throws NoDataException {
         return commentClient.addComment(student, grade, text);
     }
