@@ -66,11 +66,9 @@ public class GradeRepository {
     @Caching(
             evict = {@CacheEvict(key = "#id"), @CacheEvict(key = "'all'")}
     )
-    public Grade putGradeIntoArchive(Integer id) {
-        return template.queryForObject(
-                "update grades set is_archived = true where id = ? returning *",
-                new GradeMapper(),
-                id
+    public void putGradeIntoArchive(Integer id) {
+        template.execute(
+                "update grades set is_archived = true where id = " + id
         );
     }
 }
