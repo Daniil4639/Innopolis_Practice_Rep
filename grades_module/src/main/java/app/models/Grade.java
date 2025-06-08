@@ -15,4 +15,5 @@ public class Grade {
     private String name;
     private LocalDate startDate;
     private Boolean isActive;
+    private Boolean isArchived;
 }

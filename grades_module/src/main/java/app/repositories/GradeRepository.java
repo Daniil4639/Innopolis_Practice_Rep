@@ -4,6 +4,7 @@ import app.exceptions.NoDataException;
 import app.mappers.GradeMapper;
 import app.models.Grade;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.*;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -12,10 +13,12 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
+@CacheConfig(cacheNames = "grades")
 public class GradeRepository {
 
     private final JdbcTemplate template;
 
+    @Cacheable(key = "'all'")
     public List<Grade> readAllGrades() {
         return template.query(
                 "select * from grades",
@@ -23,6 +26,10 @@ public class GradeRepository {
         );
     }
 
+    @Caching(
+            put = @CachePut(key = "#id"),
+            evict = @CacheEvict(key = "'all'")
+    )
     public Grade makeGradeActive(Integer id) {
         return template.queryForObject(
                 "update grades set is_active = true where id = ? returning *",
@@ -31,6 +38,10 @@ public class GradeRepository {
         );
     }
 
+    @Caching(
+            put = @CachePut(key = "#id"),
+            evict = @CacheEvict(key = "'all'")
+    )
     public Grade makeGradeNonActive(Integer id) {
         return template.queryForObject(
                 "update grades set is_active = false where id = ? returning *",
@@ -39,6 +50,7 @@ public class GradeRepository {
         );
     }
 
+    @Cacheable(key = "#id")
     public Grade readGrade(Integer id) throws NoDataException {
         try {
             return template.queryForObject(
@@ -49,5 +61,16 @@ public class GradeRepository {
         } catch (EmptyResultDataAccessException ex) {
             throw new NoDataException("No record with id = " + id);
         }
+    }
+
+    @Caching(
+            evict = {@CacheEvict(key = "#id"), @CacheEvict(key = "'all'")}
+    )
+    public Grade putGradeIntoArchive(Integer id) {
+        return template.queryForObject(
+                "update grades set is_archived = true where id = ? returning *",
+                new GradeMapper(),
+                id
+        );
     }
 }

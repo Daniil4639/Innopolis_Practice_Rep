@@ -36,4 +36,9 @@ public class GradeController {
     public GradeDto makeGradeNonActive(@PathVariable("id") Integer id) throws NoDataException {
         return new GradeDto(service.makeGradeNonActive(id));
     }
+
+    @DeleteMapping("/archive/{id}")
+    public GradeDto putGradeIntoArchive(@PathVariable("id") Integer id) {
+        return new GradeDto(service.putGradeIntoArchive(id));
+    }
 }

@@ -14,7 +14,8 @@ public class GradeMapper implements RowMapper<Grade> {
                 rs.getInt("id"),
                 rs.getString("name"),
                 rs.getDate("start_date").toLocalDate(),
-                rs.getBoolean("is_active")
+                rs.getBoolean("is_active"),
+                rs.getBoolean("is_archived")
         );
     }
 }

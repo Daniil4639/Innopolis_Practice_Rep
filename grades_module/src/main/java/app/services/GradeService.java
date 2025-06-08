@@ -33,4 +33,8 @@ public class GradeService {
     public Grade readGrade(Integer id) throws NoDataException {
         return repository.readGrade(id);
     }
+
+    public Grade putGradeIntoArchive(Integer id) {
+        return repository.putGradeIntoArchive(id);
+    }
 }
